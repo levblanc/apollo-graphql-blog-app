@@ -3,8 +3,8 @@
 
 
 type Mutation {
-  postCreate(post: PostInput): PostResponse
-  postUpdate(content: String, title: String): PostResponse
+  postCreate(authorId: String, post: PostInput): PostResponse
+  postUpdate(post: PostInput, postId: String): PostResponse
 }
 
 type Post {
@@ -14,10 +14,10 @@ type Post {
   id: Int!
   published: Boolean!
   title: String!
+  updatedAt: String!
 }
 
 input PostInput {
-  authorId: String
   content: String
   title: String
 }

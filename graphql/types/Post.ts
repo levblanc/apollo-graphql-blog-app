@@ -18,6 +18,7 @@ export const Post = objectType({
     t.nonNull.string('title');
     t.nonNull.string('content');
     t.nonNull.string('createdAt');
+    t.nonNull.string('updatedAt');
     t.nonNull.boolean('published');
     t.nonNull.field('author', { type: User });
   },
@@ -28,7 +29,6 @@ export const PostInput = inputObjectType({
   definition(t) {
     t.string('title');
     t.string('content');
-    t.string('authorId');
   },
 });
 
@@ -80,7 +80,7 @@ export const posts = queryField('posts', {
 
 export const postCreate = mutationField('postCreate', {
   type: PostResopnse,
-  args: { post: PostInput },
+  args: { post: PostInput, authorId: stringArg() },
   async resolve(_parent, args, ctx) {
     const { title, content } = args.post!;
 
@@ -106,6 +106,72 @@ export const postCreate = mutationField('postCreate', {
 
       return res;
     } catch (error: any) {
+      const err = createResponse({
+        success: false,
+        error,
+      });
+
+      return err;
+    }
+  },
+});
+
+export const postUpdate = mutationField('postUpdate', {
+  type: PostResopnse,
+  args: {
+    post: PostInput,
+    postId: stringArg(),
+  },
+  async resolve(_parent, args, ctx) {
+    const { content, title } = args.post!;
+
+    if (!title && !content) {
+      const error = createResponse({
+        success: false,
+        error: new Error('You must provide title or content to create a post'),
+      });
+
+      return error;
+    }
+
+    try {
+      const postExist = await ctx.prisma.post.findUnique({
+        where: {
+          id: Number(args.postId),
+        },
+      });
+
+      if (!postExist) {
+        const error = createResponse({
+          success: false,
+          error: new Error(`Post with id ${args.postId} not exist.`),
+        });
+
+        return error;
+      }
+
+      const updatePayload = {
+        title,
+        content,
+      };
+
+      if (!title) delete updatePayload.title;
+      if (!content) delete updatePayload.content;
+
+      const updatedPost = ctx.prisma.post.update({
+        data: updatePayload,
+        where: {
+          id: Number(args.postId),
+        },
+      });
+
+      const res = createResponse({
+        success: true,
+        data: { post: updatedPost },
+      });
+
+      return res;
+    } catch (error) {
       const err = createResponse({
         success: false,
         error,
