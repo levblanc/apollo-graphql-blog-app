@@ -120,7 +120,7 @@ export const postUpdate = mutationField('postUpdate', {
   type: PostResopnse,
   args: {
     post: PostInput,
-    postId: stringArg(),
+    postId: nonNull(intArg()),
   },
   async resolve(_parent, args, ctx) {
     const { content, title } = args.post!;

@@ -4,7 +4,7 @@
 
 type Mutation {
   postCreate(authorId: String, post: PostInput): PostResponse
-  postUpdate(post: PostInput, postId: String): PostResponse
+  postUpdate(post: PostInput, postId: Int!): PostResponse
 }
 
 type Post {
