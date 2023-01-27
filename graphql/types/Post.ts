@@ -32,7 +32,7 @@ export const PostInput = inputObjectType({
   },
 });
 
-export const PostResopnse = objectType({
+export const PostResponse = objectType({
   name: 'PostResponse',
   definition(t) {
     t.implements('Response');
@@ -79,7 +79,7 @@ export const posts = queryField('posts', {
 });
 
 export const postCreate = mutationField('postCreate', {
-  type: PostResopnse,
+  type: PostResponse,
   args: { post: PostInput, authorId: stringArg() },
   async resolve(_parent, args, ctx) {
     const { title, content } = args.post!;
@@ -117,7 +117,7 @@ export const postCreate = mutationField('postCreate', {
 });
 
 export const postUpdate = mutationField('postUpdate', {
-  type: PostResopnse,
+  type: PostResponse,
   args: {
     post: PostInput,
     postId: nonNull(intArg()),
