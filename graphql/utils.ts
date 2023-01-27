@@ -30,10 +30,10 @@ export const createResponse = ({
     message,
     ...data,
     error: {
-      name: error.name,
-      message: error.message,
-      code: error.code,
-      errorCode: error.errorCode,
+      name: error?.name,
+      message: error?.message,
+      code: error?.code,
+      errorCode: error?.errorCode,
     },
   };
 };
