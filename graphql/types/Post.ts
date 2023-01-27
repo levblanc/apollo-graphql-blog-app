@@ -1,5 +1,6 @@
 import {
   booleanArg,
+  inputObjectType,
   intArg,
   mutationField,
   nonNull,
@@ -19,6 +20,15 @@ export const Post = objectType({
     t.nonNull.string('createdAt');
     t.nonNull.boolean('published');
     t.nonNull.field('author', { type: User });
+  },
+});
+
+export const PostInput = inputObjectType({
+  name: 'PostInput',
+  definition(t) {
+    t.string('title');
+    t.string('content');
+    t.string('authorId');
   },
 });
 
@@ -70,12 +80,10 @@ export const posts = queryField('posts', {
 
 export const postCreate = mutationField('postCreate', {
   type: PostResopnse,
-  args: {
-    title: nonNull(stringArg()),
-    content: nonNull(stringArg()),
-    // authorId: nonNull(intArg()),
-  },
-  async resolve(_parent, { title, content }, ctx) {
+  args: { post: PostInput },
+  async resolve(_parent, args, ctx) {
+    const { title, content } = args.post!;
+
     if (!title || !content) {
       const error = createResponse({
         success: false,

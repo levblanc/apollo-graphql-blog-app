@@ -3,7 +3,8 @@
 
 
 type Mutation {
-  postCreate(content: String!, title: String!): PostResponse
+  postCreate(post: PostInput): PostResponse
+  postUpdate(content: String, title: String): PostResponse
 }
 
 type Post {
@@ -13,6 +14,12 @@ type Post {
   id: Int!
   published: Boolean!
   title: String!
+}
+
+input PostInput {
+  authorId: String
+  content: String
+  title: String
 }
 
 type PostListResponse implements Response {
