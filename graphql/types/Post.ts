@@ -128,7 +128,7 @@ export const postUpdate = mutationField('postUpdate', {
     if (!title && !content) {
       const error = createResponse({
         success: false,
-        error: new Error('You must provide title or content to create a post'),
+        error: new Error('You must provide title or content to update a post'),
       });
 
       return error;
