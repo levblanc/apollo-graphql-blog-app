@@ -50,9 +50,9 @@ export const PostListResponse = objectType({
 
 export const posts = queryField('posts', {
   type: PostListResponse,
-  async resolve(_parent, __args, ctx) {
+  async resolve(_parent, __args, { prisma }) {
     try {
-      const posts = await ctx.prisma.post.findMany({
+      const posts = await prisma.post.findMany({
         orderBy: [
           {
             createdAt: 'desc',
@@ -81,7 +81,7 @@ export const posts = queryField('posts', {
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
   args: { post: PostInput, authorId: stringArg() },
-  async resolve(_parent, args, ctx) {
+  async resolve(_parent, args, { prisma }) {
     const { title, content } = args.post!;
 
     if (!title || !content) {
@@ -94,7 +94,7 @@ export const postCreate = mutationField('postCreate', {
     }
 
     try {
-      const post = await ctx.prisma.post.create({
+      const post = await prisma.post.create({
         data: { title, content, authorId: 1 },
       });
 
@@ -122,7 +122,7 @@ export const postUpdate = mutationField('postUpdate', {
     post: PostInput,
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, args, ctx) {
+  async resolve(_parent, args, { prisma }) {
     const { content, title } = args.post!;
 
     if (!title && !content) {
@@ -135,13 +135,13 @@ export const postUpdate = mutationField('postUpdate', {
     }
 
     try {
-      const postExist = await ctx.prisma.post.findUnique({
+      const existingPost = await prisma.post.findUnique({
         where: {
           id: Number(args.postId),
         },
       });
 
-      if (!postExist) {
+      if (!existingPost) {
         const error = createResponse({
           success: false,
           error: new Error(`Post with id ${args.postId} not exist.`),
@@ -158,7 +158,7 @@ export const postUpdate = mutationField('postUpdate', {
       if (!title) delete updatePayload.title;
       if (!content) delete updatePayload.content;
 
-      const updatedPost = ctx.prisma.post.update({
+      const updatedPost = prisma.post.update({
         data: updatePayload,
         where: {
           id: Number(args.postId),
