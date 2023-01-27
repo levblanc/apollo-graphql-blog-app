@@ -4,6 +4,7 @@ import {
   mutationField,
   nonNull,
   objectType,
+  queryField,
   stringArg,
 } from 'nexus';
 import { createResponse } from '../utils';
@@ -26,6 +27,44 @@ export const PostResopnse = objectType({
   definition(t) {
     t.implements('Response');
     t.field('post', { type: Post });
+  },
+});
+
+export const PostListResponse = objectType({
+  name: 'PostListResponse',
+  definition(t) {
+    t.implements('Response');
+    t.list.field('posts', { type: Post });
+  },
+});
+
+export const posts = queryField('posts', {
+  type: PostListResponse,
+  async resolve(_parent, __args, ctx) {
+    try {
+      const posts = await ctx.prisma.post.findMany({
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+        ],
+      });
+
+      const res = createResponse({
+        success: true,
+        message: 'Retreive posts success',
+        data: { posts },
+      });
+
+      return res;
+    } catch (error) {
+      const err = createResponse({
+        success: false,
+        error,
+      });
+
+      return err;
+    }
   },
 });
 

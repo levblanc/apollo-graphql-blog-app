@@ -15,6 +15,14 @@ type Post {
   title: String!
 }
 
+type PostListResponse implements Response {
+  code: Int!
+  error: ResponseError
+  message: String!
+  posts: [Post]
+  success: Boolean!
+}
+
 type PostResponse implements Response {
   code: Int!
   error: ResponseError
@@ -30,7 +38,7 @@ type Profile {
 }
 
 type Query {
-  ok: Boolean!
+  posts: PostListResponse
 }
 
 interface Response {
