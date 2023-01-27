@@ -29,7 +29,7 @@ export const createResponse = ({
     success,
     message,
     ...data,
-    error: {
+    error: error && {
       name: error?.name,
       message: error?.message,
       code: error?.code,
