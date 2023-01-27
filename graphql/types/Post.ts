@@ -181,3 +181,49 @@ export const postUpdate = mutationField('postUpdate', {
     }
   },
 });
+
+export const postDelete = mutationField('postDelete', {
+  type: PostResponse,
+  args: {
+    postId: nonNull(intArg()),
+  },
+  async resolve(_parent, { postId }, { prisma }) {
+    try {
+      const existingPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existingPost) {
+        const error = createResponse({
+          success: false,
+          error: new Error(`Post with id ${postId} not exist.`),
+        });
+
+        return error;
+      }
+
+      await prisma.post.delete({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      const res = createResponse({
+        success: true,
+        message: `Post (ID: ${postId}) deleted`,
+        data: { post: existingPost },
+      });
+
+      return res;
+    } catch (error) {
+      const err = createResponse({
+        success: false,
+        error,
+      });
+
+      return err;
+    }
+  },
+});
