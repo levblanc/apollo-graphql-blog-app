@@ -1,5 +1,6 @@
 import { mutationField, nonNull, objectType, stringArg } from 'nexus';
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
 import { createResponse } from '../utils';
 import { Post } from './Post';
 import { Profile } from './Profile';
@@ -61,11 +62,13 @@ export const signup = mutationField('signup', {
         });
       }
 
+      const hashedPassword = bcrypt.hashSync(password, 10);
+
       const user = await prisma.user.create({
         data: {
           email,
           name,
-          password,
+          password: hashedPassword,
         },
       });
 
