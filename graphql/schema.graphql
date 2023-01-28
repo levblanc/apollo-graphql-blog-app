@@ -77,5 +77,5 @@ type UserResponse implements Response {
   error: ResponseError
   message: String!
   success: Boolean!
-  user: User
+  token: String
 }

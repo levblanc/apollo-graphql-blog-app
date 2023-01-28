@@ -1,6 +1,7 @@
 import { mutationField, nonNull, objectType, stringArg } from 'nexus';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import JWT from 'jsonwebtoken';
 import { createResponse } from '../utils';
 import { Post } from './Post';
 import { Profile } from './Profile';
@@ -31,7 +32,7 @@ export const UserResponse = objectType({
   name: 'UserResponse',
   definition(t) {
     t.implements('Response');
-    t.field('user', { type: User });
+    t.string('token');
   },
 });
 
@@ -72,10 +73,16 @@ export const signup = mutationField('signup', {
         },
       });
 
+      const token = await JWT.sign(
+        { userId: user.id },
+        process.env.JWT_SIGNATURE,
+        { expiresIn: 36000 }
+      );
+
       const res = createResponse({
         success: true,
         message: 'User create success',
-        data: { user },
+        data: { token },
       });
 
       return res;
