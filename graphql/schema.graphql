@@ -6,6 +6,7 @@ type Mutation {
   postCreate(authorId: String, post: PostInput): PostResponse
   postDelete(postId: Int!): PostResponse
   postUpdate(post: PostInput, postId: Int!): PostResponse
+  signup(email: String!, name: String, password: String!): UserResponse
 }
 
 type Post {
@@ -69,4 +70,12 @@ type User {
   name: String
   posts: [Post]
   profile: Profile
+}
+
+type UserResponse implements Response {
+  code: Int!
+  error: ResponseError
+  message: String!
+  success: Boolean!
+  user: User
 }
