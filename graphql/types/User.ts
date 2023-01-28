@@ -42,8 +42,9 @@ export const signup = mutationField('signup', {
     email: nonNull(stringArg()),
     name: stringArg(),
     password: nonNull(stringArg()),
+    bio: nonNull(stringArg()),
   },
-  async resolve(_parent, { email, name, password }, { prisma }) {
+  async resolve(_parent, { email, name, password, bio }, { prisma }) {
     try {
       const isEmail = validator.isEmail(email);
 
@@ -65,6 +66,13 @@ export const signup = mutationField('signup', {
 
       const hashedPassword = bcrypt.hashSync(password, 10);
 
+      if (!bio) {
+        return createResponse({
+          success: false,
+          error: new Error(`Invalid user bio: ${bio}`),
+        });
+      }
+
       const user = await prisma.user.create({
         data: {
           email,
@@ -78,6 +86,10 @@ export const signup = mutationField('signup', {
         process.env.JWT_SIGNATURE,
         { expiresIn: 36000 }
       );
+
+      await prisma.profile.create({
+        data: { bio, userId: user.id },
+      });
 
       const res = createResponse({
         success: true,
