@@ -8,7 +8,7 @@ import {
   queryField,
   stringArg,
 } from 'nexus';
-import { createResponse } from '../utils';
+import { createResponse } from '../utils/response';
 import { User } from './User';
 
 export const Post = objectType({

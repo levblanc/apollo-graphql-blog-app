@@ -8,7 +8,7 @@ import {
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
-import { createResponse } from '../utils';
+import { createResponse } from '../utils/response';
 import { Post } from './Post';
 import { Profile } from './Profile';
 
