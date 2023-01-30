@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../lib/prisma';
-import verifyUser from './utils/verifyUser';
+import userAuthentication from './utils/userAuthentication';
 
 export type GraphqlContext = {
   req: NextApiRequest;
@@ -17,7 +17,7 @@ export const createGraphqlContext = async (
   let userId: string | null = null;
 
   if (authorization) {
-    userId = verifyUser(authorization);
+    userId = userAuthentication(authorization);
   }
 
   return { req, res, prisma, userId };
