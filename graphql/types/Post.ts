@@ -172,7 +172,7 @@ export const postUpdate = mutationField('postUpdate', {
       if (!existingPost) {
         const error = createResponse({
           success: false,
-          error: new Error(`Post with id ${args.postId} not exist.`),
+          error: new Error(`Post with id ${args.postId} not exist`),
         });
 
         return error;
@@ -245,7 +245,7 @@ export const postDelete = mutationField('postDelete', {
       if (!existingPost) {
         const error = createResponse({
           success: false,
-          error: new Error(`Post with id ${postId} not exist.`),
+          error: new Error(`Post with id ${postId} not exist`),
         });
 
         return error;

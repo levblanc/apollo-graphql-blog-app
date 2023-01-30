@@ -31,7 +31,7 @@ const userAuthorization = async ({
     if (!post) {
       const error = createResponse({
         success: false,
-        error: new Error('Post not found.'),
+        error: new Error('Post not found'),
       });
 
       return error;
@@ -40,7 +40,7 @@ const userAuthorization = async ({
     if (post?.authorId !== user.id) {
       const error = createResponse({
         success: false,
-        error: new Error('Post not owned by this user.'),
+        error: new Error('Post not owned by this user'),
       });
 
       return error;
