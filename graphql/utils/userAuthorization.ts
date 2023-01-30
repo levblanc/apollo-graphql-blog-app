@@ -10,47 +10,56 @@ const userAuthorization = async ({
   postId: number;
   prisma: PrismaClient;
 }): ResponseType => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
-
-  if (!user) {
-    const error = createResponse({
-      success: false,
-      error: new Error('User not found.'),
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
     });
 
-    return error;
-  }
+    if (!user) {
+      const error = createResponse({
+        success: false,
+        error: new Error('User not found.'),
+      });
 
-  const post = await prisma.post.findUnique({ where: { id: postId } });
+      return error;
+    }
 
-  if (!post) {
-    const error = createResponse({
-      success: false,
-      error: new Error('Post not found.'),
+    const post = await prisma.post.findUnique({ where: { id: postId } });
+
+    if (!post) {
+      const error = createResponse({
+        success: false,
+        error: new Error('Post not found.'),
+      });
+
+      return error;
+    }
+
+    if (post?.authorId !== user.id) {
+      const error = createResponse({
+        success: false,
+        error: new Error('Post not owned by this user.'),
+      });
+
+      return error;
+    }
+
+    const res = createResponse({
+      success: true,
+      message: 'Authorized user',
     });
 
-    return error;
-  }
-
-  if (post?.authorId !== user.id) {
-    const error = createResponse({
+    return res;
+  } catch (error) {
+    const err = createResponse({
       success: false,
-      error: new Error('Post not owned by this user.'),
+      error,
     });
 
-    return error;
+    return err;
   }
-
-  const res = createResponse({
-    success: true,
-    message: 'Authorized user',
-  });
-
-  return res;
 };
 
 export default userAuthorization;
