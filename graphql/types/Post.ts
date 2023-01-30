@@ -9,6 +9,7 @@ import {
   stringArg,
 } from 'nexus';
 import { createResponse } from '../utils/response';
+import verifyUser from '../utils/verifyUser';
 import { User } from './User';
 
 export const Post = objectType({
@@ -81,8 +82,20 @@ export const posts = queryField('posts', {
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
   args: { post: PostInput, authorId: stringArg() },
-  async resolve(_parent, args, { prisma }) {
+  async resolve(_parent, args, { req, prisma }) {
     const { title, content } = args.post!;
+    const { authorization } = req.headers;
+
+    const userId = verifyUser(authorization);
+
+    if (!userId) {
+      const error = createResponse({
+        success: false,
+        error: new Error('Forbidden access (unauthenticated)'),
+      });
+
+      return error;
+    }
 
     if (!title || !content) {
       const error = createResponse({
@@ -95,7 +108,7 @@ export const postCreate = mutationField('postCreate', {
 
     try {
       const post = await prisma.post.create({
-        data: { title, content, authorId: 1 },
+        data: { title, content, authorId: userId },
       });
 
       const res = createResponse({
