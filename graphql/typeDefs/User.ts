@@ -37,5 +37,6 @@ export const UserResponse = objectType({
   definition(t) {
     t.implements('Response');
     t.string('token');
+    t.field('user', { type: User });
   },
 });

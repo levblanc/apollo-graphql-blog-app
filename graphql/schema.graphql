@@ -55,7 +55,7 @@ type Profile {
 }
 
 type Query {
-  ok: Boolean!
+  me(id: Int!): UserResponse
 }
 
 interface Response {
@@ -86,4 +86,5 @@ type UserResponse implements Response {
   message: String!
   success: Boolean!
   token: String
+  user: User
 }
