@@ -7,6 +7,7 @@ export type GraphqlContext = {
   req: NextApiRequest;
   res: NextApiResponse;
   prisma: PrismaClient;
+  userId: string | null;
 };
 
 export const createGraphqlContext = async (
