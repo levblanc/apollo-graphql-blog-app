@@ -2,14 +2,19 @@
 ### Do not make changes to this file directly
 
 
+input CredentialsInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   postCreate(authorId: String, post: PostInput): PostResponse
   postDelete(postId: Int!): PostResponse
   postPublish(postId: Int!): PostResponse
   postUnpublish(postId: Int!): PostResponse
   postUpdate(post: PostInput, postId: Int!): PostResponse
-  signin(credentials: credentialsInput!): UserResponse
-  signup(bio: String!, credentials: credentialsInput!, name: String): UserResponse
+  signin(credentials: CredentialsInput!): UserResponse
+  signup(bio: String!, credentials: CredentialsInput!, name: String): UserResponse
 }
 
 type Post {
@@ -50,7 +55,7 @@ type Profile {
 }
 
 type Query {
-  posts: PostListResponse
+  ok: Boolean!
 }
 
 interface Response {
@@ -81,9 +86,4 @@ type UserResponse implements Response {
   message: String!
   success: Boolean!
   token: String
-}
-
-input credentialsInput {
-  email: String!
-  password: String!
 }

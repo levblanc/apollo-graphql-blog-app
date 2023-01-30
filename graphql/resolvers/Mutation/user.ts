@@ -1,54 +1,9 @@
-import {
-  inputObjectType,
-  mutationField,
-  nonNull,
-  objectType,
-  stringArg,
-} from 'nexus';
+import { mutationField, nonNull, stringArg } from 'nexus';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import JWT from 'jsonwebtoken';
-import { createResponse } from '../utils/response';
-import { Post } from './Post';
-import { Profile } from './Profile';
-
-export const User = objectType({
-  name: 'User',
-  definition(t) {
-    t.int('id');
-    t.string('name');
-    t.string('email');
-    t.field('profile', { type: Profile });
-    t.list.field('posts', {
-      type: Post,
-      async resolve(parent, _args, ctx) {
-        return await ctx.prisma.user
-          .findUnique({
-            where: {
-              id: parent.id,
-            },
-          })
-          .posts();
-      },
-    });
-  },
-});
-
-export const credentialsInput = inputObjectType({
-  name: 'credentialsInput',
-  definition(t) {
-    t.nonNull.string('email');
-    t.nonNull.string('password');
-  },
-});
-
-export const UserResponse = objectType({
-  name: 'UserResponse',
-  definition(t) {
-    t.implements('Response');
-    t.string('token');
-  },
-});
+import { createResponse } from '../../utils/response';
+import { UserResponse, CredentialsInput } from '../../typeDefs/User';
 
 const createToken = async ({
   userId,
@@ -65,7 +20,7 @@ const createToken = async ({
 export const signup = mutationField('signup', {
   type: UserResponse,
   args: {
-    credentials: nonNull(credentialsInput),
+    credentials: nonNull(CredentialsInput),
     name: stringArg(),
     bio: nonNull(stringArg()),
   },
@@ -134,7 +89,7 @@ export const signup = mutationField('signup', {
 export const signin = mutationField('signin', {
   type: UserResponse,
   args: {
-    credentials: nonNull(credentialsInput),
+    credentials: nonNull(CredentialsInput),
   },
   async resolve(_parent, { credentials }, { prisma }) {
     const { email, password } = credentials;
