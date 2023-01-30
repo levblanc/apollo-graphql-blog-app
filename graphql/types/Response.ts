@@ -1,5 +1,19 @@
 import { interfaceType, objectType } from 'nexus';
 
+export type ResponseErrorType = {
+  code?: string;
+  name?: string;
+  message?: string;
+  errorCode?: string;
+};
+export interface ResponseType {
+  code: number;
+  success: boolean;
+  message: string;
+  error?: ResponseErrorType;
+  data?: any;
+}
+
 export const ResponseError = objectType({
   name: 'ResponseError',
   definition(t) {

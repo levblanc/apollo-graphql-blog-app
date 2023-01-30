@@ -8,6 +8,7 @@ import {
   stringArg,
 } from 'nexus';
 import { createResponse } from '../utils/response';
+import userAuthorization from '../utils/userAuthorization';
 import { User } from './User';
 
 export const Post = objectType({
@@ -130,8 +131,27 @@ export const postUpdate = mutationField('postUpdate', {
     post: PostInput,
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, args, { prisma }) {
+  async resolve(_parent, args, { prisma, userId }) {
     const { content, title } = args.post!;
+
+    if (!userId) {
+      const error = createResponse({
+        success: false,
+        error: new Error('Forbidden access (unauthenticated)'),
+      });
+
+      return error;
+    }
+
+    const authorizationRes = await userAuthorization({
+      userId,
+      postId: args.postId,
+      prisma,
+    });
+
+    if (!authorizationRes.success) {
+      return authorizationRes;
+    }
 
     if (!title && !content) {
       const error = createResponse({
