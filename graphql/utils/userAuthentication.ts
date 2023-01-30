@@ -1,6 +1,6 @@
 import JWT from 'jsonwebtoken';
 
-const userAuthentication = (jwt: string) => {
+const userAuthentication = (jwt: string): string | null => {
   try {
     const tokenInfo = JWT.verify(jwt, process.env.JWT_SIGNATURE);
     return tokenInfo.userId;
