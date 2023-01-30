@@ -215,8 +215,27 @@ export const postDelete = mutationField('postDelete', {
   args: {
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, { postId }, { prisma }) {
+  async resolve(_parent, { postId }, { prisma, userId }) {
     try {
+      if (!userId) {
+        const error = createResponse({
+          success: false,
+          error: new Error('Forbidden access (unauthenticated)'),
+        });
+
+        return error;
+      }
+
+      const authorizationRes = await userAuthorization({
+        userId,
+        postId: postId,
+        prisma,
+      });
+
+      if (!authorizationRes.success) {
+        return authorizationRes;
+      }
+
       const existingPost = await prisma.post.findUnique({
         where: {
           id: Number(postId),
