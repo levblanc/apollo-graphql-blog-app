@@ -1,5 +1,4 @@
 import {
-  booleanArg,
   inputObjectType,
   intArg,
   mutationField,
@@ -9,7 +8,6 @@ import {
   stringArg,
 } from 'nexus';
 import { createResponse } from '../utils/response';
-import verifyUser from '../utils/verifyUser';
 import { User } from './User';
 
 export const Post = objectType({
@@ -82,11 +80,8 @@ export const posts = queryField('posts', {
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
   args: { post: PostInput, authorId: stringArg() },
-  async resolve(_parent, args, { req, prisma }) {
+  async resolve(_parent, args, { prisma, userId }) {
     const { title, content } = args.post!;
-    const { authorization } = req.headers;
-
-    const userId = verifyUser(authorization);
 
     if (!userId) {
       const error = createResponse({
