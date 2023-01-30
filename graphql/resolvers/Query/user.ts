@@ -1,11 +1,10 @@
 import { UserResponse } from '@/graphql/typeDefs';
 import { createResponse } from '@/graphql/utils/response';
-import { intArg, nonNull, queryField } from 'nexus';
+import { queryField } from 'nexus';
 
 export const me = queryField('me', {
   type: UserResponse,
-  args: { id: nonNull(intArg()) },
-  async resolve(_parent, { id }, { prisma, userId }) {
+  async resolve(_parent, __args, { prisma, userId }) {
     if (!userId) {
       const error = createResponse({
         success: false,
@@ -18,7 +17,7 @@ export const me = queryField('me', {
     try {
       const user = await prisma.user.findUnique({
         where: {
-          id,
+          id: userId,
         },
       });
 
