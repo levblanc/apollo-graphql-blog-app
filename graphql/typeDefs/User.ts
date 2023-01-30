@@ -8,7 +8,6 @@ export const User = objectType({
     t.int('id');
     t.string('name');
     t.string('email');
-    t.field('profile', { type: Profile });
     t.list.field('posts', {
       type: Post,
       async resolve(parent, _args, ctx) {

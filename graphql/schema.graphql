@@ -52,10 +52,21 @@ type Profile {
   bio: String
   id: Int
   user: User
+  userId: String
+}
+
+type ProfileResponse implements Response {
+  code: Int!
+  error: ResponseError
+  message: String!
+  profile: Profile
+  success: Boolean!
 }
 
 type Query {
-  me(id: Int!): UserResponse
+  me: UserResponse
+  posts: PostListResponse
+  profile(userId: Int!): ProfileResponse
 }
 
 interface Response {
@@ -77,7 +88,6 @@ type User {
   id: Int
   name: String
   posts: [Post]
-  profile: Profile
 }
 
 type UserResponse implements Response {
