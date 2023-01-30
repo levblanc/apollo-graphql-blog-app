@@ -341,3 +341,70 @@ export const postPublish = mutationField('postPublish', {
     }
   },
 });
+
+export const postUnpublish = mutationField('postUnpublish', {
+  type: PostResponse,
+  args: {
+    postId: nonNull(intArg()),
+  },
+  async resolve(_parent, { postId }, { prisma, userId }) {
+    if (!userId) {
+      const error = createResponse({
+        success: false,
+        error: new Error('Forbidden access (unauthenticated)'),
+      });
+
+      return error;
+    }
+
+    const authorizationRes = await userAuthorization({
+      userId,
+      postId,
+      prisma,
+    });
+
+    if (!authorizationRes.success) {
+      return authorizationRes;
+    }
+
+    try {
+      const existingPost = await prisma.post.findUnique({
+        where: {
+          id: Number(postId),
+        },
+      });
+
+      if (!existingPost) {
+        const error = createResponse({
+          success: false,
+          error: new Error(`Post with id ${postId} not exist`),
+        });
+
+        return error;
+      }
+
+      const publishedPost = prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          published: false,
+        },
+      });
+
+      const res = createResponse({
+        success: true,
+        data: { post: publishedPost },
+      });
+
+      return res;
+    } catch (error) {
+      const err = createResponse({
+        success: false,
+        error,
+      });
+
+      return err;
+    }
+  },
+});

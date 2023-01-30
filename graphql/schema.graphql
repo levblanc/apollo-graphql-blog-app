@@ -6,6 +6,7 @@ type Mutation {
   postCreate(authorId: String, post: PostInput): PostResponse
   postDelete(postId: Int!): PostResponse
   postPublish(postId: Int!): PostResponse
+  postUnpublish(postId: Int!): PostResponse
   postUpdate(post: PostInput, postId: Int!): PostResponse
   signin(credentials: credentialsInput!): UserResponse
   signup(bio: String!, credentials: credentialsInput!, name: String): UserResponse
