@@ -50,8 +50,14 @@ export const UserResponse = objectType({
   },
 });
 
-const createToken = async (userId: string) => {
-  return await JWT.sign({ userId }, process.env.JWT_SIGNATURE, {
+const createToken = async ({
+  userId,
+  email,
+}: {
+  userId: string;
+  email: string;
+}) => {
+  return await JWT.sign({ userId, email }, process.env.JWT_SIGNATURE, {
     expiresIn: 36000,
   });
 };
@@ -101,7 +107,7 @@ export const signup = mutationField('signup', {
         },
       });
 
-      const token = await createToken(user.id);
+      const token = await createToken({ userId: user.id, email });
 
       await prisma.profile.create({
         data: { bio, userId: user.id },
@@ -155,7 +161,7 @@ export const signin = mutationField('signin', {
         return err;
       }
 
-      const token = await createToken(user.id);
+      const token = await createToken({ userId: user.id, email });
       const res = createResponse({
         success: true,
         message: 'User sign in success',
