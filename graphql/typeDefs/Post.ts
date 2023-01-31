@@ -10,7 +10,17 @@ export const Post = objectType({
     t.nonNull.string('createdAt');
     t.nonNull.string('updatedAt');
     t.nonNull.boolean('published');
-    t.nonNull.field('author', { type: User });
+    t.nonNull.int('authorId');
+    t.nonNull.field('author', {
+      type: User,
+      async resolve({ authorId }, _args, { prisma }) {
+        return await prisma.user.findUnique({
+          where: {
+            id: authorId,
+          },
+        });
+      },
+    });
   },
 });
 
