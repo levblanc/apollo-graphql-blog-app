@@ -1,6 +1,5 @@
 import { inputObjectType, objectType } from 'nexus';
 import { Post } from './Post';
-import { Profile } from './Profile';
 
 export const User = objectType({
   name: 'User',
@@ -10,14 +9,20 @@ export const User = objectType({
     t.string('email');
     t.list.field('posts', {
       type: Post,
-      async resolve(parent, _args, ctx) {
-        return await ctx.prisma.user
-          .findUnique({
-            where: {
-              id: parent.id,
-            },
-          })
-          .posts();
+      async resolve({ id }, _args, { prisma, userId }) {
+        const isMe = id === userId;
+        let findOptions = {
+          where: { authorId: id },
+          orderBy: [{ createdAt: 'desc' }],
+        };
+
+        // Show published posts only
+        // if requested by other users
+        if (!isMe) {
+          findOptions.where.published = true;
+        }
+
+        return await prisma.post.findMany(findOptions);
       },
     });
   },
