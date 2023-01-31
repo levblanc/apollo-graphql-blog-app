@@ -1,4 +1,5 @@
 import { inputObjectType, objectType } from 'nexus';
+import userLoader from '../loaders/userLoader';
 import { User } from './User';
 
 export const Post = objectType({
@@ -13,12 +14,8 @@ export const Post = objectType({
     t.nonNull.int('authorId');
     t.nonNull.field('author', {
       type: User,
-      async resolve({ authorId }, _args, { prisma }) {
-        return await prisma.user.findUnique({
-          where: {
-            id: authorId,
-          },
-        });
+      async resolve({ authorId }, _args, __ctx) {
+        return userLoader.load(authorId);
       },
     });
   },
