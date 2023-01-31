@@ -8,7 +8,7 @@ input CredentialsInput {
 }
 
 type Mutation {
-  postCreate(authorId: String, post: PostInput): PostResponse
+  postCreate(authorId: Int, post: PostInput): PostResponse
   postDelete(postId: Int!): PostResponse
   postPublish(postId: Int!): PostResponse
   postUnpublish(postId: Int!): PostResponse
@@ -19,6 +19,7 @@ type Mutation {
 
 type Post {
   author: User!
+  authorId: Int!
   content: String!
   createdAt: String!
   id: Int!
@@ -52,7 +53,7 @@ type Profile {
   bio: String
   id: Int
   user: User
-  userId: String
+  userId: Int
 }
 
 type ProfileResponse implements Response {

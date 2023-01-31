@@ -1,11 +1,11 @@
-import { intArg, mutationField, nonNull, stringArg } from 'nexus';
+import { intArg, mutationField, nonNull } from 'nexus';
 import { createResponse } from '../../utils/response';
 import userAuthorization from '../../utils/userAuthorization';
 import { PostInput, PostResponse } from '@/graphql/typeDefs';
 
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
-  args: { post: PostInput, authorId: stringArg() },
+  args: { post: PostInput, authorId: intArg() },
   async resolve(_parent, args, { prisma, userId }) {
     const { title, content } = args.post!;
 

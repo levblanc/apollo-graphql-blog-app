@@ -6,7 +6,7 @@ export const Profile = objectType({
   definition(t) {
     t.int('id');
     t.string('bio');
-    t.string('userId');
+    t.int('userId');
     t.field('user', {
       type: User,
       async resolve({ userId }, _args, { prisma }) {
