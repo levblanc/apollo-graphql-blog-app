@@ -34,7 +34,7 @@ export const postCreate = mutationField('postCreate', {
 
       const res = createResponse({
         success: true,
-        message: 'Post create success.',
+        message: 'Post create success',
         data: { post },
       });
 
@@ -111,7 +111,7 @@ export const postUpdate = mutationField('postUpdate', {
       if (!title) delete updatePayload.title;
       if (!content) delete updatePayload.content;
 
-      const updatedPost = prisma.post.update({
+      const updatedPost = await prisma.post.update({
         data: updatePayload,
         where: {
           id: Number(args.postId),
@@ -241,7 +241,7 @@ export const postPublish = mutationField('postPublish', {
         return error;
       }
 
-      const publishedPost = prisma.post.update({
+      const publishedPost = await prisma.post.update({
         where: {
           id: postId,
         },
@@ -308,7 +308,7 @@ export const postUnpublish = mutationField('postUnpublish', {
         return error;
       }
 
-      const publishedPost = prisma.post.update({
+      const publishedPost = await prisma.post.update({
         where: {
           id: postId,
         },

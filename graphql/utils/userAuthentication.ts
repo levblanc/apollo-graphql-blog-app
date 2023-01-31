@@ -5,7 +5,7 @@ const userAuthentication = (jwt: string): string | null => {
     const tokenInfo = JWT.verify(jwt, process.env.JWT_SIGNATURE);
     return tokenInfo.userId;
   } catch (error) {
-    console.error(error);
+    console.error('Error at `userAuthentication`:', error);
     return null;
   }
 };
