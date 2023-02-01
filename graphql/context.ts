@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../lib/prisma';
-import userAuthentication from './utils/userAuthentication';
+import prisma from '@/lib/prisma';
+import userAuthentication from '@/graphql/utils/userAuthentication';
 
 export type GraphqlContext = {
   req: NextApiRequest;

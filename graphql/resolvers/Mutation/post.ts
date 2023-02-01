@@ -1,6 +1,6 @@
 import { intArg, mutationField, nonNull } from 'nexus';
-import { createResponse } from '../../utils/response';
-import userAuthorization from '../../utils/userAuthorization';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
+import userAuthorization from '@/graphql/utils/userAuthorization';
 import { PostInput, PostResponse } from '@/graphql/typeDefs';
 
 export const postCreate = mutationField('postCreate', {
@@ -10,21 +10,15 @@ export const postCreate = mutationField('postCreate', {
     const { title, content } = args.post!;
 
     if (!userId) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Forbidden access (unauthenticated)'),
       });
-
-      return error;
     }
 
     if (!title || !content) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('You must provide title and content to create a post'),
       });
-
-      return error;
     }
 
     try {
@@ -32,20 +26,12 @@ export const postCreate = mutationField('postCreate', {
         data: { title, content, authorId: userId },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         message: 'Post create success',
         data: { post },
       });
-
-      return res;
     } catch (error: any) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });
@@ -60,12 +46,9 @@ export const postUpdate = mutationField('postUpdate', {
     const { content, title } = args.post!;
 
     if (!userId) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Forbidden access (unauthenticated)'),
       });
-
-      return error;
     }
 
     const authorizationRes = await userAuthorization({
@@ -79,12 +62,9 @@ export const postUpdate = mutationField('postUpdate', {
     }
 
     if (!title && !content) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('You must provide title or content to update a post'),
       });
-
-      return error;
     }
 
     try {
@@ -95,12 +75,9 @@ export const postUpdate = mutationField('postUpdate', {
       });
 
       if (!existingPost) {
-        const error = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error(`Post with id ${args.postId} not exist`),
         });
-
-        return error;
       }
 
       const updatePayload = {
@@ -118,19 +95,11 @@ export const postUpdate = mutationField('postUpdate', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         data: { post: updatedPost },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });
@@ -143,12 +112,9 @@ export const postDelete = mutationField('postDelete', {
   async resolve(_parent, { postId }, { prisma, userId }) {
     try {
       if (!userId) {
-        const error = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error('Forbidden access (unauthenticated)'),
         });
-
-        return error;
       }
 
       const authorizationRes = await userAuthorization({
@@ -168,12 +134,9 @@ export const postDelete = mutationField('postDelete', {
       });
 
       if (!existingPost) {
-        const error = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error(`Post with id ${postId} not exist`),
         });
-
-        return error;
       }
 
       await prisma.post.delete({
@@ -182,20 +145,12 @@ export const postDelete = mutationField('postDelete', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         message: `Post (ID: ${postId}) deleted`,
         data: { post: existingPost },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });
@@ -207,12 +162,9 @@ export const postPublish = mutationField('postPublish', {
   },
   async resolve(_parent, { postId }, { prisma, userId }) {
     if (!userId) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Forbidden access (unauthenticated)'),
       });
-
-      return error;
     }
 
     const authorizationRes = await userAuthorization({
@@ -233,12 +185,9 @@ export const postPublish = mutationField('postPublish', {
       });
 
       if (!existingPost) {
-        const error = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error(`Post with id ${postId} not exist`),
         });
-
-        return error;
       }
 
       const publishedPost = await prisma.post.update({
@@ -250,19 +199,13 @@ export const postPublish = mutationField('postPublish', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         data: { post: publishedPost },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
+      return errorResponse({
         error,
       });
-
-      return err;
     }
   },
 });
@@ -274,12 +217,9 @@ export const postUnpublish = mutationField('postUnpublish', {
   },
   async resolve(_parent, { postId }, { prisma, userId }) {
     if (!userId) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Forbidden access (unauthenticated)'),
       });
-
-      return error;
     }
 
     const authorizationRes = await userAuthorization({
@@ -300,12 +240,9 @@ export const postUnpublish = mutationField('postUnpublish', {
       });
 
       if (!existingPost) {
-        const error = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error(`Post with id ${postId} not exist`),
         });
-
-        return error;
       }
 
       const publishedPost = await prisma.post.update({
@@ -317,19 +254,13 @@ export const postUnpublish = mutationField('postUnpublish', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         data: { post: publishedPost },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
+      return errorResponse({
         error,
       });
-
-      return err;
     }
   },
 });

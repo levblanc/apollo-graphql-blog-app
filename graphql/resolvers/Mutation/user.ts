@@ -1,9 +1,9 @@
 import { mutationField, nonNull, stringArg } from 'nexus';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import JWT from 'jsonwebtoken';
-import { createResponse } from '../../utils/response';
-import { UserResponse, CredentialsInput } from '../../typeDefs/User';
+import JWT, { Secret } from 'jsonwebtoken';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
+import { UserResponse, CredentialsInput } from '@/graphql/typeDefs/User';
 
 const createToken = async ({
   userId,
@@ -12,7 +12,9 @@ const createToken = async ({
   userId: string;
   email: string;
 }) => {
-  return await JWT.sign({ userId, email }, process.env.JWT_SIGNATURE, {
+  const signature: Secret = process.env.JWT_SIGNATURE!;
+
+  return await JWT.sign({ userId, email }, signature, {
     expiresIn: 36000,
   });
 };
@@ -30,8 +32,7 @@ export const signup = mutationField('signup', {
       const isEmail = validator.isEmail(email);
 
       if (!isEmail) {
-        return createResponse({
-          success: false,
+        return errorResponse({
           error: new Error('Invalid email'),
         });
       }
@@ -39,8 +40,7 @@ export const signup = mutationField('signup', {
       const isValidPassword = validator.isLength(password, { min: 5 });
 
       if (!isValidPassword) {
-        return createResponse({
-          success: false,
+        return errorResponse({
           error: new Error('Invalid password, length less than 5'),
         });
       }
@@ -48,8 +48,7 @@ export const signup = mutationField('signup', {
       const hashedPassword = bcrypt.hashSync(password, 10);
 
       if (!bio) {
-        return createResponse({
-          success: false,
+        return errorResponse({
           error: new Error(`Invalid user bio: ${bio}`),
         });
       }
@@ -68,20 +67,12 @@ export const signup = mutationField('signup', {
         data: { bio, userId: user.id },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         message: 'User create success',
         data: { token },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });
@@ -97,40 +88,27 @@ export const signin = mutationField('signin', {
     try {
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
-        const err = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error('Invalid credentials'),
         });
-
-        return err;
       }
 
       const isMatch = bcrypt.compareSync(password, user.password);
 
       if (!isMatch) {
-        const err = createResponse({
-          success: false,
+        return errorResponse({
           error: new Error('Invalid credentials'),
         });
-
-        return err;
       }
 
       const token = await createToken({ userId: user.id, email });
-      const res = createResponse({
-        success: true,
+
+      return successResponse({
         message: 'User sign in success',
         data: { token },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });

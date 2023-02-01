@@ -1,15 +1,16 @@
 import { PrismaClient } from '@prisma/client';
-import { createResponse, ResponseType } from './response';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
+import { ResponseType } from '@/graphql/typeDefs';
 
 const userAuthorization = async ({
   userId,
   postId,
   prisma,
 }: {
-  userId: string;
+  userId: number;
   postId: number;
   prisma: PrismaClient;
-}): ResponseType => {
+}): Promise<ResponseType> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -18,47 +19,32 @@ const userAuthorization = async ({
     });
 
     if (!user) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('User not found.'),
       });
-
-      return error;
     }
 
     const post = await prisma.post.findUnique({ where: { id: postId } });
 
     if (!post) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Post not found'),
       });
-
-      return error;
     }
 
     if (post?.authorId !== user.id) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Post not owned by this user'),
       });
-
-      return error;
     }
 
-    const res = createResponse({
-      success: true,
+    return successResponse({
       message: 'Authorized user',
     });
-
-    return res;
   } catch (error) {
-    const err = createResponse({
-      success: false,
+    return errorResponse({
       error,
     });
-
-    return err;
   }
 };
 

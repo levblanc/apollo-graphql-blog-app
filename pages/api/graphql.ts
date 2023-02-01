@@ -1,7 +1,7 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import { schema } from '../../graphql/schema';
-import { createGraphqlContext } from '../../graphql/context';
+import { schema } from '@/graphql/schema';
+import { createGraphqlContext } from '@/graphql/context';
 
 const apolloServer = new ApolloServer({
   schema,

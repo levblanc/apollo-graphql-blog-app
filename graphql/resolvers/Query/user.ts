@@ -1,17 +1,14 @@
 import { UserResponse } from '@/graphql/typeDefs';
-import { createResponse } from '@/graphql/utils/response';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { queryField } from 'nexus';
 
 export const me = queryField('me', {
   type: UserResponse,
   async resolve(_parent, __args, { prisma, userId }) {
     if (!userId) {
-      const error = createResponse({
-        success: false,
+      return errorResponse({
         error: new Error('Forbidden access (unauthenticated)'),
       });
-
-      return error;
     }
 
     try {
@@ -21,20 +18,12 @@ export const me = queryField('me', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         message: 'User found',
         data: { user },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
-        error,
-      });
-
-      return err;
+      return errorResponse({ error });
     }
   },
 });

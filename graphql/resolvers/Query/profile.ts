@@ -1,5 +1,5 @@
 import { ProfileResponse } from '@/graphql/typeDefs';
-import { createResponse } from '@/graphql/utils/response';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { intArg, nonNull, queryField } from 'nexus';
 
 export const profile = queryField('profile', {
@@ -13,19 +13,13 @@ export const profile = queryField('profile', {
         },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         data: { profile },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
+      return errorResponse({
         error,
       });
-
-      return err;
     }
   },
 });

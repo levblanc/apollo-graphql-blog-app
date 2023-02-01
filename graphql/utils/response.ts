@@ -37,3 +37,17 @@ export const createResponse = ({
     },
   };
 };
+
+export const successResponse = ({
+  message,
+  data,
+}: {
+  message?: string;
+  data?: any;
+}) => {
+  return createResponse({ success: true, message, data });
+};
+
+export const errorResponse = ({ error }: { error: any }) => {
+  return createResponse({ success: false, error });
+};

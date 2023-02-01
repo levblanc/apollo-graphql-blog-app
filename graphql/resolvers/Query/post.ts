@@ -1,5 +1,5 @@
 import { queryField } from 'nexus';
-import { createResponse } from '../../utils/response';
+import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { PostListResponse } from '@/graphql/typeDefs';
 
 export const posts = queryField('posts', {
@@ -11,20 +11,14 @@ export const posts = queryField('posts', {
         orderBy: { createdAt: 'desc' },
       });
 
-      const res = createResponse({
-        success: true,
+      return successResponse({
         message: 'Retreive posts success',
         data: { posts },
       });
-
-      return res;
     } catch (error) {
-      const err = createResponse({
-        success: false,
+      return errorResponse({
         error,
       });
-
-      return err;
     }
   },
 });

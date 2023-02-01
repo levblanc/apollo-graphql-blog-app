@@ -1,6 +1,6 @@
 import { inputObjectType, objectType } from 'nexus';
-import userLoader from '../loaders/userLoader';
-import { User } from './User';
+import userLoader from '@/graphql/loaders/userLoader';
+import { User } from '@/graphql/typeDefs/User';
 
 export const Post = objectType({
   name: 'Post',
