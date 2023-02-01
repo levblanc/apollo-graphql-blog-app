@@ -8,7 +8,7 @@ export const posts = queryField('posts', {
     try {
       const posts = await prisma.post.findMany({
         where: { published: true },
-        orderBy: [{ createdAt: 'desc' }],
+        orderBy: { createdAt: 'desc' },
       });
 
       const res = createResponse({

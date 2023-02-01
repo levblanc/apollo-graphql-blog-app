@@ -11,9 +11,17 @@ export const User = objectType({
       type: Post,
       async resolve({ id }, _args, { prisma, userId }) {
         const isMe = id === userId;
+
+        let whereInputs: {
+          authorId: number | null | undefined;
+          published?: boolean;
+        } = {
+          authorId: id,
+        };
+
         let findOptions = {
-          where: { authorId: id },
-          orderBy: [{ createdAt: 'desc' }],
+          where: whereInputs,
+          orderBy: { createdAt: 'desc' },
         };
 
         // Show published posts only
