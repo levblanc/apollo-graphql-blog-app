@@ -8,7 +8,7 @@ import {
   Drawer,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import useStyles from './header.styles';
+import useStyles from './styles';
 
 export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -21,8 +21,12 @@ export default function AppHeader() {
         <Group position="apart" sx={{ height: '100%' }}>
           <Title order={1}>Blog App</Title>
           <Group className={classes.hiddenMobile}>
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button component="a" variant="default" href="/login">
+              Log in
+            </Button>
+            <Button component="a" href="/sign-up">
+              Sign up
+            </Button>
           </Group>
 
           <Burger
@@ -43,8 +47,12 @@ export default function AppHeader() {
         zIndex={1000000}
       >
         <Group position="center" grow pb="xl" px="md">
-          <Button variant="default">Log in</Button>
-          <Button>Sign up</Button>
+          <Button component="a" variant="default" href="/login">
+            Log in
+          </Button>
+          <Button component="a" href="/sign-up">
+            Sign up
+          </Button>
         </Group>
       </Drawer>
     </Box>

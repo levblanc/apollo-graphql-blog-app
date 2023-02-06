@@ -1,4 +1,4 @@
-import useStyles from './footer.styles';
+import useStyles from './styles';
 
 export default function AppFooter() {
   const { classes } = useStyles();
