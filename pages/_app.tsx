@@ -5,6 +5,7 @@ import apolloClient from '@/lib/apolloClient';
 import { MantineProvider } from '@mantine/core';
 import '@/styles/global.css';
 import AppHeader from '@/components/Header';
+import AppFooter from '@/components/Footer';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -29,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="appContainer">
             <AppHeader />
             <Component {...pageProps} />
-            {/* <Footer /> */}
+            <AppFooter />
           </div>
         </MantineProvider>
       </ApolloProvider>
