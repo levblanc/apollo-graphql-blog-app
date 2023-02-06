@@ -10,7 +10,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import useStyles from './header.styles';
 
-const AppHeader = () => {
+export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const { classes } = useStyles();
@@ -49,6 +49,4 @@ const AppHeader = () => {
       </Drawer>
     </Box>
   );
-};
-
-export default AppHeader;
+}

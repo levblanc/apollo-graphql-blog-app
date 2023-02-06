@@ -1,6 +1,6 @@
 import useStyles from './footer.styles';
 
-const AppFooter = () => {
+export default function AppFooter() {
   const { classes } = useStyles();
 
   return (
@@ -16,5 +16,4 @@ const AppFooter = () => {
       </a>
     </footer>
   );
-};
-export default AppFooter;
+}
