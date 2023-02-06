@@ -1,15 +1,32 @@
 import {
-  TextInput,
-  PasswordInput,
   Anchor,
+  Container,
+  Button,
   Paper,
   Title,
   Text,
-  Container,
-  Button,
+  TextInput,
+  PasswordInput,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import emailValidator from '@/utils/emailValidator';
 
 export default function SignIn() {
+  const form = useForm({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+
+    validate: {
+      email: emailValidator,
+      password: (value) => (value ? null : 'Password is required'),
+    },
+  });
+
+  const handleSubmit = (values: typeof form.values) => console.log(values);
+  const handleError = (errors: typeof form.errors) => console.log(errors);
+
   return (
     <Container size="md" my={40}>
       <Title
@@ -24,35 +41,35 @@ export default function SignIn() {
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
         Do not have an account yet?{' '}
-        <Anchor<'a'>
-          href="#"
-          size="sm"
-          onClick={(event) => event.preventDefault()}
-        >
+        <Anchor<'a'> href="/sign-up" size="sm">
           Create account
         </Anchor>
       </Text>
 
-      <Paper withBorder shadow="md" p={20} mt={30} radius="md">
-        <TextInput
-          label="Email address"
-          placeholder="you@gmail.com"
-          size="md"
-          required
-        />
+      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+        <Paper withBorder shadow="md" p={20} mt={30} radius="md">
+          <TextInput
+            label="Email address"
+            placeholder="you@gmail.com"
+            size="md"
+            required
+            {...form.getInputProps('email')}
+          />
 
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          size="md"
-          required
-        />
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            size="md"
+            mt="md"
+            required
+            {...form.getInputProps('password')}
+          />
 
-        <Button fullWidth mt="xl" size="md">
-          Log In
-        </Button>
-      </Paper>
+          <Button fullWidth mt="xl" size="md" type="submit">
+            Log In
+          </Button>
+        </Paper>
+      </form>
     </Container>
   );
 }
