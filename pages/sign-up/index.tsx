@@ -31,26 +31,26 @@ export default function SignUp() {
   const handleError = (errors: typeof form.errors) => console.log(errors);
 
   return (
-    <Container size="md" my={40} sx={{ minWidth: '380px' }}>
-      <Title
-        order={2}
-        align="center"
-        sx={(theme) => ({
-          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          fontWeight: 900,
-        })}
-      >
-        Welcome to Blog App!
-      </Title>
+    <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+      <Container size={500} my={40}>
+        <Title
+          order={2}
+          align="center"
+          sx={(theme) => ({
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+          })}
+        >
+          Welcome to Blog App!
+        </Title>
 
-      <Text color="dimmed" size="sm" align="center" mt={5}>
-        Already have an account?{' '}
-        <Anchor<'a'> href="/login" size="sm">
-          Log In
-        </Anchor>
-      </Text>
+        <Text color="dimmed" size="sm" align="center" mt={5}>
+          Already have an account?{' '}
+          <Anchor<'a'> href="/login" size="sm">
+            Log In
+          </Anchor>
+        </Text>
 
-      <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
         <Paper withBorder shadow="md" p={20} mt={30} radius="md">
           <TextInput
             label="Email address"
@@ -90,7 +90,7 @@ export default function SignUp() {
             Sign Up
           </Button>
         </Paper>
-      </form>
-    </Container>
+      </Container>
+    </form>
   );
 }
