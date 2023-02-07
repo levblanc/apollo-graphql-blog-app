@@ -1,4 +1,4 @@
-import { Box, Title } from '@mantine/core';
+import { Box, Button, Title } from '@mantine/core';
 
 export default function Profile() {
   const profile = {
@@ -20,7 +20,9 @@ export default function Profile() {
           <Title order={2}>{profile.user.name}</Title>
           <p>{profile.bio}</p>
         </Box>
-        <div>{profile.isMyProfile ? <AddPostModal /> : null}</div>
+        <div>
+          {profile.isMyProfile ? <Button>Create New Post</Button> : null}
+        </div>
       </Box>
       {/* <div>
         {profile.user.posts.map((post) => {
