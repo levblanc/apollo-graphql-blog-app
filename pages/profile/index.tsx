@@ -1,29 +1,23 @@
-import { Box, Button, Title } from '@mantine/core';
+import { Box, Button, Container, Group, Title, Text } from '@mantine/core';
 
 export default function Profile() {
   const profile = {
-    user: { name: '', posts: [] },
-    bio: '',
-    isMyProfile: false,
+    user: { name: 'Test Profile', posts: [] },
+    bio: 'Awesome person!',
+    isMyProfile: true,
   };
 
   return (
-    <Box>
-      <Box
-        sx={{
-          marginBottom: '2rem',
-          display: 'flex ',
-          justifyContent: 'space-between',
-        }}
-      >
+    <Container>
+      <Group position="apart">
         <Box>
-          <Title order={2}>{profile.user.name}</Title>
-          <p>{profile.bio}</p>
+          <Title order={2} mr={10}>
+            {profile.user.name}
+          </Title>
+          <Text>{profile.bio}</Text>
         </Box>
-        <div>
-          {profile.isMyProfile ? <Button>Create New Post</Button> : null}
-        </div>
-      </Box>
+        {profile.isMyProfile ? <Button>Create New Post</Button> : null}
+      </Group>
       {/* <div>
         {profile.user.posts.map((post) => {
           return (
@@ -39,6 +33,6 @@ export default function Profile() {
           );
         })}
       </div> */}
-    </Box>
+    </Container>
   );
 }
