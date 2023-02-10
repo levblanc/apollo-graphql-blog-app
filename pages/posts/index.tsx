@@ -55,7 +55,7 @@ export default function Posts() {
         data.posts &&
         data.posts.data &&
         data.posts.data.length &&
-        data.posts.data.map((post: Post, index: number) => (
+        data.posts.data.map((post: Post) => (
           <Post
             key={post.id}
             id={post.id}

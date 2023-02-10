@@ -4,11 +4,15 @@ import useStyles from './styles';
 export default function Post({ id, title, content, createdAt, author }: Post) {
   const { classes } = useStyles();
 
+  const dateFormatter = (date: string): string => {
+    return `${new Date(Number(date))}`.split(' ').splice(1, 4).join(' ');
+  };
+
   return (
     <Card
       key={id}
       px="md"
-      radius="sm"
+      radius="md"
       withBorder
       component="a"
       href="#"
@@ -22,7 +26,7 @@ export default function Post({ id, title, content, createdAt, author }: Post) {
           By {author.name}
         </Text>
         <Text color="dimmed" size="sm" italic>
-          Created At {createdAt}
+          Created At {dateFormatter(createdAt)}
         </Text>
       </Group>
       <Text>{content}</Text>
