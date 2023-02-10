@@ -13,7 +13,7 @@ export const posts = queryField('posts', {
 
       return successResponse({
         message: 'Retreive posts success',
-        data: { posts },
+        data: posts,
       });
     } catch (error) {
       return errorResponse({

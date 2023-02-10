@@ -41,6 +41,6 @@ export const PostListResponse = objectType({
   name: 'PostListResponse',
   definition(t) {
     t.implements('Response');
-    t.list.field('posts', { type: Post });
+    t.list.field('data', { type: Post });
   },
 });

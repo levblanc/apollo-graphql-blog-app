@@ -1,34 +1,31 @@
-import {
-  SimpleGrid,
-  Card,
-  Image,
-  Text,
-  Container,
-  AspectRatio,
-} from '@mantine/core';
+import { Card, Text, Group } from '@mantine/core';
 import useStyles from './styles';
 
-export default function Post({ post }) {
+export default function Post({ id, title, content, createdAt, author }: Post) {
   const { classes } = useStyles();
 
   return (
     <Card
-      key={post.title}
-      p="md"
-      radius="md"
+      key={id}
+      px="md"
+      radius="sm"
+      withBorder
       component="a"
       href="#"
       className={classes.card}
     >
-      <AspectRatio ratio={1920 / 1080}>
-        <Image src={post.image} alt="post image" />
-      </AspectRatio>
-      <Text color="dimmed" size="xs" transform="uppercase" weight={700} mt="md">
-        {post.date}
+      <Text weight={800} fz={22} mb="xs" color="blue">
+        {title}
       </Text>
-      <Text className={classes.title} mt={5}>
-        {post.title}
-      </Text>
+      <Group position="apart" mb="xs">
+        <Text color="dimmed" size="sm" italic>
+          By {author.name}
+        </Text>
+        <Text color="dimmed" size="sm" italic>
+          Created At {createdAt}
+        </Text>
+      </Group>
+      <Text>{content}</Text>
     </Card>
   );
 }

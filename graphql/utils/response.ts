@@ -5,6 +5,14 @@ type ResponseParam = {
   error?: any | null;
 };
 
+type ResponseData = {
+  code: number;
+  success: boolean;
+  message?: string;
+  data?: any | null;
+  error?: any | null;
+};
+
 export const createResponse = ({
   success,
   message,
@@ -28,7 +36,7 @@ export const createResponse = ({
     code: statusCode,
     success,
     message,
-    ...data,
+    data,
     error: error && {
       name: error?.name,
       message: error?.message,

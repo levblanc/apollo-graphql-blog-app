@@ -35,9 +35,9 @@ input PostInput {
 
 type PostListResponse implements Response {
   code: Int!
+  data: [Post]
   error: ResponseError
   message: String!
-  posts: [Post]
   success: Boolean!
 }
 
