@@ -1,7 +1,13 @@
 import { Card, Text, Group } from '@mantine/core';
 import useStyles from './styles';
 
-export default function Post({ id, title, content, createdAt, author }: Post) {
+export default function Post({
+  id,
+  title,
+  content,
+  createdAt,
+  authorName,
+}: PostAttr) {
   const { classes } = useStyles();
 
   const dateFormatter = (date: string): string => {
@@ -23,7 +29,7 @@ export default function Post({ id, title, content, createdAt, author }: Post) {
       </Text>
       <Group position="apart" mb="xs">
         <Text color="dimmed" size="sm" italic>
-          By {author.name}
+          By {authorName}
         </Text>
         <Text color="dimmed" size="sm" italic>
           Created At {dateFormatter(createdAt)}

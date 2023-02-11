@@ -1,16 +1,9 @@
 import Post from '@/components/Post';
 import { gql, useQuery } from '@apollo/client';
-import {
-  Container,
-  Loader,
-  Paper,
-  SimpleGrid,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Container, Loader, Paper, Text, Title } from '@mantine/core';
 
 const GET_POSTS = gql`
-  query {
+  query Posts {
     posts {
       code
       success
@@ -35,7 +28,6 @@ const GET_POSTS = gql`
 
 export default function Posts() {
   const { data, error, loading } = useQuery(GET_POSTS);
-  console.log(data);
 
   return (
     <Container>
@@ -55,14 +47,14 @@ export default function Posts() {
         data.posts &&
         data.posts.data &&
         data.posts.data.length &&
-        data.posts.data.map((post: Post) => (
+        data.posts.data.map((post: PostData) => (
           <Post
             key={post.id}
             id={post.id}
             title={post.title}
             content={post.content}
             createdAt={post.createdAt}
-            author={post.author}
+            authorName={post.author.name!}
           />
         ))
       )}

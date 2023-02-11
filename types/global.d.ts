@@ -9,11 +9,19 @@ declare global {
     bio?: string;
   };
 
-  type Post = {
+  type PostData = {
     id: string;
     title: string;
     content: string;
     createdAt: string;
     author: User;
+  };
+
+  type PostAttr = {
+    id: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    authorName: string;
   };
 }
