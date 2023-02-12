@@ -31,6 +31,6 @@ export const ProfileResponse = objectType({
   name: 'ProfileResponse',
   definition(t) {
     t.implements('Response');
-    t.field('profile', { type: Profile });
+    t.field('data', { type: Profile });
   },
 });

@@ -58,9 +58,9 @@ type Profile {
 
 type ProfileResponse implements Response {
   code: Int!
+  data: Profile
   error: ResponseError
   message: String!
-  profile: Profile
   success: Boolean!
 }
 

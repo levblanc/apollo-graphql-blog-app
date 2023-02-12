@@ -14,7 +14,7 @@ export const profile = queryField('profile', {
       });
 
       return successResponse({
-        data: { profile },
+        data: profile,
       });
     } catch (error) {
       return errorResponse({
