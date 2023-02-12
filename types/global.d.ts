@@ -15,6 +15,7 @@ declare global {
     content: string;
     createdAt: string;
     author: User;
+    published?: boolean;
   };
 
   type PostAttr = {
@@ -23,5 +24,7 @@ declare global {
     content: string;
     createdAt: string;
     authorName: string;
+    published?: boolean;
+    isMyProfile?: boolean;
   };
 }
