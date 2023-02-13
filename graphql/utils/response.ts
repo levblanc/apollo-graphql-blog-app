@@ -3,6 +3,7 @@ type ResponseParam = {
   message?: string;
   data?: any | null;
   error?: any | null;
+  token?: string | null;
 };
 
 type ResponseData = {
@@ -11,6 +12,7 @@ type ResponseData = {
   message?: string;
   data?: any | null;
   error?: any | null;
+  token?: string | null;
 };
 
 export const createResponse = ({
@@ -18,6 +20,7 @@ export const createResponse = ({
   message,
   data = null,
   error = null,
+  token = null,
 }: ResponseParam) => {
   let statusCode = 200;
 
@@ -37,6 +40,7 @@ export const createResponse = ({
     success,
     message,
     data,
+    token,
     error: error && {
       name: error?.name,
       message: error?.message,
@@ -49,11 +53,13 @@ export const createResponse = ({
 export const successResponse = ({
   message,
   data,
+  token,
 }: {
   message?: string;
   data?: any;
+  token?: string;
 }) => {
-  return createResponse({ success: true, message, data });
+  return createResponse({ success: true, message, data, token });
 };
 
 export const errorResponse = ({ error }: { error: any }) => {

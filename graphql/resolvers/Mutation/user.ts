@@ -69,7 +69,7 @@ export const signup = mutationField('signup', {
 
       return successResponse({
         message: 'User create success',
-        data: { token },
+        token,
       });
     } catch (error) {
       return errorResponse({ error });
@@ -105,7 +105,7 @@ export const signin = mutationField('signin', {
 
       return successResponse({
         message: 'User sign in success',
-        data: { token },
+        token,
       });
     } catch (error) {
       return errorResponse({ error });
