@@ -31,6 +31,7 @@ const GET_PROFILE = gql`
           id
           name
           posts {
+            id
             title
             content
             createdAt

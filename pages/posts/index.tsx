@@ -19,6 +19,7 @@ const GET_POSTS = gql`
         author {
           name
         }
+        id
         title
         content
         createdAt
