@@ -7,13 +7,18 @@ export const Profile = objectType({
     t.int('id');
     t.string('bio');
     t.int('userId');
+    t.boolean('isMyProfile', {
+      resolve({ userId: id }, _args, { userId }) {
+        return id === userId;
+      },
+    });
     t.field('user', {
       type: User,
-      async resolve({ userId }, _args, { prisma }) {
+      async resolve({ userId: id }, _args, { prisma }) {
         try {
           const user = await prisma.user.findUnique({
             where: {
-              id: userId,
+              id,
             },
           });
 

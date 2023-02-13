@@ -52,6 +52,7 @@ type PostResponse implements Response {
 type Profile {
   bio: String
   id: Int
+  isMyProfile: Boolean
   user: User
   userId: Int
 }

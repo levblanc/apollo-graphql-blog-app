@@ -26,6 +26,7 @@ const GET_PROFILE = gql`
       message
       data {
         bio
+        isMyProfile
         user {
           id
           name
