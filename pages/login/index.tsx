@@ -9,9 +9,31 @@ import {
   PasswordInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { useEffect } from 'react';
 import emailValidator from '@/utils/emailValidator';
+import Error from '@/components/Error';
+import { useRouter } from 'next/router';
+
+const SIGN_IN = gql`
+  mutation Signin($credentials: CredentialsInput!) {
+    signin(credentials: $credentials) {
+      token
+      code
+      success
+      error {
+        name
+        message
+        errorCode
+        code
+      }
+    }
+  }
+`;
 
 export default function SignIn() {
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: '',
@@ -24,12 +46,28 @@ export default function SignIn() {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => console.log(values);
-  const handleError = (errors: typeof form.errors) => console.log(errors);
+  const [signIn, { data, loading, error }] = useMutation(SIGN_IN);
+
+  const handleSubmit = async (credentials: typeof form.values) => {
+    await signIn({
+      variables: { credentials },
+    });
+  };
+
+  useEffect(() => {
+    if (data) {
+      if (data.signin.token) {
+        localStorage.setItem('token', data.signin.token);
+        router.push('/posts');
+      }
+    }
+  }, [data]);
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Container size={500} my={40}>
+        {error && <Error message={error.message} />}
+        {data?.signin?.error && <Error message={data.signin.error.message} />}
         <Title
           order={2}
           align="center"
@@ -65,7 +103,14 @@ export default function SignIn() {
             {...form.getInputProps('password')}
           />
 
-          <Button fullWidth mt="xl" size="md" type="submit">
+          <Button
+            fullWidth
+            mt="xl"
+            size="md"
+            type="submit"
+            loading={loading}
+            disabled={!form.isValid()}
+          >
             Log In
           </Button>
         </Paper>
