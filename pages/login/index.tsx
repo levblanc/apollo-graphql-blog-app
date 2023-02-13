@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import emailValidator from '@/utils/emailValidator';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
+import { TOKEN } from '@/utils/constants';
 
 const SIGN_IN = gql`
   mutation Signin($credentials: CredentialsInput!) {
@@ -57,7 +58,7 @@ export default function SignIn() {
   useEffect(() => {
     if (data) {
       if (data.signin.token) {
-        localStorage.setItem('token', data.signin.token);
+        localStorage.setItem(TOKEN, data.signin.token);
         router.push('/posts');
       }
     }
