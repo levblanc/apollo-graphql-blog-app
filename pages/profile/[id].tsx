@@ -75,7 +75,11 @@ export default function Profile() {
                 </Title>
                 <Text color="dimmed">{profile.bio}</Text>
               </Box>
-              {profile.isMyProfile ? <Button>Create New Post</Button> : null}
+              {profile.isMyProfile ? (
+                <Button onClick={() => router.push('/write')}>
+                  Create New Post
+                </Button>
+              ) : null}
             </Group>
             {profile.user.posts && !!profile.user.posts.length ? (
               profile.user.posts.map((post: PostData) => (
