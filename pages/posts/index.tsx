@@ -22,6 +22,7 @@ const GET_POSTS = gql`
         title
         content
         createdAt
+        published
       }
     }
   }
@@ -48,6 +49,7 @@ export default function Posts() {
             content={post.content}
             createdAt={post.createdAt}
             authorName={post.author.name!}
+            published={post.published}
           />
         ))
       )}

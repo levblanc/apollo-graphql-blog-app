@@ -19,11 +19,8 @@ export default function Post({
         <Text weight={800} fz={22} color="blue">
           {title}
         </Text>
-        {isMyProfile && published ? (
-          <Button>Unpublish</Button>
-        ) : (
-          <Button>Publish</Button>
-        )}
+        {isMyProfile && published && <Button>Unpublish</Button>}
+        {isMyProfile && !published && <Button>Publish</Button>}
       </Group>
       <Group position="apart" mb="xs">
         <Text color="dimmed" size="sm" italic>
