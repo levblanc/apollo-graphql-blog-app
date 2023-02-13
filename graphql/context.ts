@@ -17,7 +17,7 @@ export const createGraphqlContext = async (
   const { authorization } = req.headers;
   let userId: string | null = null;
 
-  if (authorization) {
+  if (authorization && authorization !== 'null') {
     userId = userAuthentication(authorization);
   }
 
