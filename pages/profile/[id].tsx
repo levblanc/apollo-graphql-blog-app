@@ -64,17 +64,20 @@ export default function Profile() {
       ) : (
         profile && (
           <>
-            <Group position="apart">
+            <Group
+              position="apart"
+              mb="md"
+              sx={{ borderBottom: '1px solid grey' }}
+            >
               <Box mb="sm" p="md">
-                <Title order={2} mb="md">
+                <Title order={2} mb="sm">
                   {profile.user.name}
                 </Title>
                 <Text color="dimmed">{profile.bio}</Text>
               </Box>
               {profile.isMyProfile ? <Button>Create New Post</Button> : null}
             </Group>
-            {profile.user.posts &&
-              profile.user.posts.length &&
+            {profile.user.posts && !!profile.user.posts.length ? (
               profile.user.posts.map((post: PostData) => (
                 <Post
                   key={post.id}
@@ -86,7 +89,12 @@ export default function Profile() {
                   published={post.published}
                   isMyProfile={profile.isMyProfile}
                 />
-              ))}
+              ))
+            ) : (
+              <Text align="center" color="dimmed">
+                No posts created yet.
+              </Text>
+            )}
           </>
         )
       )}
