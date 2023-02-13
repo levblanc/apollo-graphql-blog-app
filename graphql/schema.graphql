@@ -43,9 +43,9 @@ type PostListResponse implements Response {
 
 type PostResponse implements Response {
   code: Int!
+  data: Post
   error: ResponseError
   message: String!
-  post: Post
   success: Boolean!
 }
 

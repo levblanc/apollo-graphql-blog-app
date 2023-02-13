@@ -28,7 +28,7 @@ export const postCreate = mutationField('postCreate', {
 
       return successResponse({
         message: 'Post create success',
-        data: { post },
+        data: post,
       });
     } catch (error: any) {
       return errorResponse({ error });

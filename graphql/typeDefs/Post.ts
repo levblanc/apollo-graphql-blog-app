@@ -33,7 +33,7 @@ export const PostResponse = objectType({
   name: 'PostResponse',
   definition(t) {
     t.implements('Response');
-    t.field('post', { type: Post });
+    t.field('data', { type: Post });
   },
 });
 
