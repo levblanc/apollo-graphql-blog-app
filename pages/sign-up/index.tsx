@@ -11,8 +11,59 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import emailValidator from '@/utils/emailValidator';
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { useEffect } from 'react';
+import Error from '@/components/Error';
+import { useRouter } from 'next/router';
+import { TOKEN } from '@/utils/constants';
+
+const SIGN_UP = gql`
+  mutation Signup(
+    $credentials: CredentialsInput!
+    $bio: String!
+    $name: String
+  ) {
+    signup(credentials: $credentials, bio: $bio, name: $name) {
+      code
+      message
+      success
+      token
+      error {
+        name
+        message
+        errorCode
+        code
+      }
+    }
+  }
+`;
 
 export default function SignUp() {
+  const router = useRouter();
+  const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
+
+  const handleSubmit = async (values: typeof form.values) => {
+    const { email, password, bio, name } = values;
+
+    await signUp({
+      variables: {
+        credentials: { email, password },
+        name,
+        bio,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (data) {
+      if (data.signup.token) {
+        localStorage.setItem(TOKEN, data.signup.token);
+        router.push('/posts');
+      }
+    }
+  }, [data]);
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -27,12 +78,12 @@ export default function SignUp() {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => console.log(values);
-  const handleError = (errors: typeof form.errors) => console.log(errors);
-
   return (
-    <form onSubmit={form.onSubmit(handleSubmit, handleError)}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Container size={500} my={40}>
+        {error && <Error message={error.message} />}
+        {data?.signup?.error && <Error message={data.signup.error.message} />}
+
         <Title
           order={2}
           align="center"
@@ -86,7 +137,14 @@ export default function SignUp() {
             {...form.getInputProps('bio')}
           />
 
-          <Button fullWidth mt="xl" size="md" type="submit">
+          <Button
+            fullWidth
+            mt="xl"
+            size="md"
+            type="submit"
+            loading={loading}
+            disabled={!form.isValid()}
+          >
             Sign Up
           </Button>
         </Paper>
