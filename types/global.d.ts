@@ -13,6 +13,23 @@ declare global {
     userId?: string;
     error?: JwtError;
   };
+
+  type ResolverError = {
+    code?: string;
+    name?: string;
+    message?: string;
+    errorCode?: string;
+  };
+
+  type ResolverResponse = {
+    code: number;
+    success: boolean;
+    message?: string;
+    token?: string;
+    data: any | null;
+    error: ResolverError | null;
+  };
+
   type User = {
     name?: string;
     email: string;

@@ -1,67 +1,50 @@
 type ResponseParam = {
   success: boolean;
-  message?: string;
-  data?: any | null;
-  error?: any | null;
-  token?: string | null;
-};
-
-type ResponseData = {
-  code: number;
-  success: boolean;
-  message?: string;
-  data?: any | null;
-  error?: any | null;
-  token?: string | null;
+  data?: any;
+  error?: any;
+  token?: string;
 };
 
 export const createResponse = ({
   success,
-  message,
   data = null,
   error = null,
-  token = null,
-}: ResponseParam) => {
-  let statusCode = 200;
+  token,
+}: ResponseParam): ResolverResponse => {
+  let response: ResolverResponse = {
+    code: 200,
+    success,
+    ...data,
+    error,
+  };
 
   if (!success) {
-    statusCode = 400;
-    message = error?.message;
+    response.code = 400;
+    response.message = error?.message;
+    response.error = error;
 
     if (!error) {
-      message = `error is ${error}`;
+      response.message = `error is ${JSON.stringify(error)}`;
     }
-  } else if (!message) {
-    message = 'Operation success';
   }
 
-  return {
-    code: statusCode,
-    success,
-    message,
-    data,
-    token,
-    error: error && {
-      name: error?.name,
-      message: error?.message,
-      code: error?.code,
-      errorCode: error?.errorCode,
-    },
-  };
+  if (token) {
+    response.token = token;
+  }
+
+  return response;
 };
 
 export const successResponse = ({
-  message,
   data,
   token,
 }: {
-  message?: string;
   data?: any;
   token?: string;
-}) => {
-  return createResponse({ success: true, message, data, token });
+}): ResolverResponse => {
+  return createResponse({ success: true, data, token });
 };
 
-export const errorResponse = ({ error }: { error: any }) => {
+export const errorResponse = ({ error }: { error: any }): ResolverResponse => {
   return createResponse({ success: false, error });
 };

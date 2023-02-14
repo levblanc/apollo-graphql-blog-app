@@ -74,7 +74,7 @@ type Query {
 interface Response {
   code: Int!
   error: ResponseError
-  message: String!
+  message: String
   success: Boolean!
 }
 
