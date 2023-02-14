@@ -1,25 +1,28 @@
 import { UserResponse } from '@/graphql/typeDefs';
+import { unauthenticated } from '@/graphql/utils/errorMessage';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { queryField } from 'nexus';
+import { GraphqlContext } from '@/graphql/context';
 
 export const me = queryField('me', {
   type: UserResponse,
-  async resolve(_parent, __args, { prisma, userId }) {
-    if (!userId) {
+  async resolve(_parent, __args, { prisma, auth }: GraphqlContext) {
+    if (!auth?.success) {
+      const errMsg = unauthenticated(auth?.error.message);
+
       return errorResponse({
-        error: new Error('Forbidden access (unauthenticated)'),
+        error: new Error(errMsg),
       });
     }
 
     try {
       const user = await prisma.user.findUnique({
         where: {
-          id: userId,
+          id: auth?.userId,
         },
       });
 
       return successResponse({
-        message: 'User found',
         data: { user },
       });
     } catch (error) {

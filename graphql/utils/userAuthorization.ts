@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
-import { ResponseType } from '@/graphql/typeDefs';
 
 const userAuthorization = async ({
   userId,
@@ -10,7 +9,7 @@ const userAuthorization = async ({
   userId: number;
   postId: number;
   prisma: PrismaClient;
-}): Promise<ResponseType> => {
+}): Promise<ResolverResponse> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -38,9 +37,7 @@ const userAuthorization = async ({
       });
     }
 
-    return successResponse({
-      message: 'Authorized user',
-    });
+    return successResponse({});
   } catch (error) {
     return errorResponse({
       error,

@@ -4,7 +4,7 @@ import { PostListResponse } from '@/graphql/typeDefs';
 
 export const posts = queryField('posts', {
   type: PostListResponse,
-  async resolve(_parent, __args, { prisma }) {
+  async resolve(_parent, __args, { prisma }): Promise<ResolverResponse> {
     try {
       const posts = await prisma.post.findMany({
         where: { published: true },
@@ -12,7 +12,6 @@ export const posts = queryField('posts', {
       });
 
       return successResponse({
-        message: 'Retreive posts success',
         data: posts,
       });
     } catch (error) {

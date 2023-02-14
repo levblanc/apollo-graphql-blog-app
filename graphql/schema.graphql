@@ -37,7 +37,7 @@ type PostListResponse implements Response {
   code: Int!
   data: [Post]
   error: ResponseError
-  message: String!
+  message: String
   success: Boolean!
 }
 
@@ -45,7 +45,7 @@ type PostResponse implements Response {
   code: Int!
   data: Post
   error: ResponseError
-  message: String!
+  message: String
   success: Boolean!
 }
 
@@ -61,7 +61,7 @@ type ProfileResponse implements Response {
   code: Int!
   data: Profile
   error: ResponseError
-  message: String!
+  message: String
   success: Boolean!
 }
 
@@ -95,7 +95,7 @@ type User {
 type UserResponse implements Response {
   code: Int!
   error: ResponseError
-  message: String!
+  message: String
   success: Boolean!
   token: String
   user: User

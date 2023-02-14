@@ -2,16 +2,19 @@ import { intArg, mutationField, nonNull } from 'nexus';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
 import userAuthorization from '@/graphql/utils/userAuthorization';
 import { PostInput, PostResponse } from '@/graphql/typeDefs';
+import { unauthenticated } from '@/graphql/utils/errorMessage';
 
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
   args: { post: PostInput, authorId: intArg() },
-  async resolve(_parent, args, { prisma, userId }) {
+  async resolve(_parent, args, { prisma, auth }): Promise<ResolverResponse> {
     const { title, content } = args.post!;
 
-    if (!userId) {
+    if (!auth.success) {
+      const errMsg = unauthenticated(auth.error.message);
+
       return errorResponse({
-        error: new Error('Forbidden access (unauthenticated)'),
+        error: new Error(errMsg),
       });
     }
 
@@ -23,11 +26,10 @@ export const postCreate = mutationField('postCreate', {
 
     try {
       const post = await prisma.post.create({
-        data: { title, content, authorId: userId },
+        data: { title, content, authorId: auth.userId },
       });
 
       return successResponse({
-        message: 'Post create success',
         data: post,
       });
     } catch (error: any) {
@@ -42,17 +44,19 @@ export const postUpdate = mutationField('postUpdate', {
     post: PostInput,
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, args, { prisma, userId }) {
+  async resolve(_parent, args, { prisma, auth }): Promise<ResolverResponse> {
     const { content, title } = args.post!;
 
-    if (!userId) {
+    if (!auth.success) {
+      const errMsg = unauthenticated(auth.error.message);
+
       return errorResponse({
-        error: new Error('Forbidden access (unauthenticated)'),
+        error: new Error(errMsg),
       });
     }
 
     const authorizationRes = await userAuthorization({
-      userId,
+      userId: auth.userId,
       postId: args.postId,
       prisma,
     });
@@ -109,16 +113,22 @@ export const postDelete = mutationField('postDelete', {
   args: {
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, { postId }, { prisma, userId }) {
+  async resolve(
+    _parent,
+    { postId },
+    { prisma, auth }
+  ): Promise<ResolverResponse> {
     try {
-      if (!userId) {
+      if (!auth.success) {
+        const errMsg = unauthenticated(auth.error.message);
+
         return errorResponse({
-          error: new Error('Forbidden access (unauthenticated)'),
+          error: new Error(errMsg),
         });
       }
 
       const authorizationRes = await userAuthorization({
-        userId,
+        userId: auth.userId,
         postId: postId,
         prisma,
       });
@@ -146,7 +156,6 @@ export const postDelete = mutationField('postDelete', {
       });
 
       return successResponse({
-        message: `Post (ID: ${postId}) deleted`,
         data: existingPost,
       });
     } catch (error) {
@@ -160,15 +169,20 @@ export const postPublish = mutationField('postPublish', {
   args: {
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, { postId }, { prisma, userId }) {
-    if (!userId) {
+  async resolve(
+    _parent,
+    { postId },
+    { prisma, auth }
+  ): Promise<ResolverResponse> {
+    if (!auth.success) {
+      const errMsg = unauthenticated(auth.error.message);
       return errorResponse({
-        error: new Error('Forbidden access (unauthenticated)'),
+        error: new Error(errMsg),
       });
     }
 
     const authorizationRes = await userAuthorization({
-      userId,
+      userId: auth.userId,
       postId,
       prisma,
     });
@@ -215,15 +229,21 @@ export const postUnpublish = mutationField('postUnpublish', {
   args: {
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, { postId }, { prisma, userId }) {
-    if (!userId) {
+  async resolve(
+    _parent,
+    { postId },
+    { prisma, auth }
+  ): Promise<ResolverResponse> {
+    if (!auth.success) {
+      const errMsg = unauthenticated(auth.error.message);
+
       return errorResponse({
-        error: new Error('Forbidden access (unauthenticated)'),
+        error: new Error(errMsg),
       });
     }
 
     const authorizationRes = await userAuthorization({
-      userId,
+      userId: auth.userId,
       postId,
       prisma,
     });

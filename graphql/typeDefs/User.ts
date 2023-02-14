@@ -9,8 +9,8 @@ export const User = objectType({
     t.string('email');
     t.list.field('posts', {
       type: Post,
-      async resolve({ id }, _args, { prisma, userId }) {
-        const isMe = id === userId;
+      async resolve({ id }, _args, { prisma, auth }) {
+        const isMe = id === auth.userId;
 
         let whereInputs: {
           authorId: number | null | undefined;

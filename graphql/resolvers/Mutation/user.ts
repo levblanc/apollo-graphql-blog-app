@@ -26,7 +26,11 @@ export const signup = mutationField('signup', {
     name: stringArg(),
     bio: nonNull(stringArg()),
   },
-  async resolve(_parent, { credentials, name, bio }, { prisma }) {
+  async resolve(
+    _parent,
+    { credentials, name, bio },
+    { prisma }
+  ): Promise<ResolverResponse> {
     const { email, password } = credentials;
     try {
       const isEmail = validator.isEmail(email);
@@ -68,8 +72,8 @@ export const signup = mutationField('signup', {
       });
 
       return successResponse({
-        message: 'User create success',
         token,
+        data: { user },
       });
     } catch (error) {
       return errorResponse({ error });
@@ -82,11 +86,16 @@ export const signin = mutationField('signin', {
   args: {
     credentials: nonNull(CredentialsInput),
   },
-  async resolve(_parent, { credentials }, { prisma }) {
+  async resolve(
+    _parent,
+    { credentials },
+    { prisma }
+  ): Promise<ResolverResponse> {
     const { email, password } = credentials;
 
     try {
       const user = await prisma.user.findUnique({ where: { email } });
+
       if (!user) {
         return errorResponse({
           error: new Error('Invalid credentials'),
@@ -104,8 +113,8 @@ export const signin = mutationField('signin', {
       const token = await createToken({ userId: user.id, email });
 
       return successResponse({
-        message: 'User sign in success',
         token,
+        data: { user },
       });
     } catch (error) {
       return errorResponse({ error });
