@@ -7,7 +7,7 @@ export type GraphqlContext = {
   req: NextApiRequest;
   res: NextApiResponse;
   prisma: PrismaClient;
-  userId: string | null;
+  auth: AuthResponse | null;
 };
 
 export const createGraphqlContext = async (
@@ -15,11 +15,11 @@ export const createGraphqlContext = async (
   res: NextApiResponse
 ): Promise<GraphqlContext> => {
   const { authorization } = req.headers;
-  let userId: string | null = null;
+  let auth: AuthResponse | null = null;
 
   if (authorization && authorization !== 'null') {
-    userId = userAuthentication(authorization);
+    auth = userAuthentication(authorization);
   }
 
-  return { req, res, prisma, userId };
+  return { req, res, prisma, auth };
 };

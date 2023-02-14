@@ -3,6 +3,12 @@ import { PrismaClient } from '@prisma/client';
 declare global {
   var prisma: PrismaClient;
 
+
+  type AuthResponse = {
+    success: boolean;
+    userId?: string;
+    error?: JwtError;
+  };
   type User = {
     name?: string;
     email: string;

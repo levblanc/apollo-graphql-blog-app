@@ -1,14 +1,28 @@
 import JWT, { Secret } from 'jsonwebtoken';
 
-const userAuthentication = (jwt: string): string | null => {
+type JwtError = {
+  name: string;
+  message: string;
+  expiredAt?: string;
+};
+
+const userAuthentication = (jwt: string): AuthResponse | null => {
   try {
     const signature: Secret = process.env.JWT_SIGNATURE!;
-    const tokenInfo = JWT.verify(jwt, signature) as { userId: string };
+    const tokenInfo = JWT.verify(jwt, signature);
+    console.log('>>>>>> tokenInfo in userAuthentication', tokenInfo);
 
-    return tokenInfo.userId;
-  } catch (error) {
-    console.error('Error at `userAuthentication`:', error);
-    return null;
+    return {
+      success: true,
+      userId: tokenInfo.userId,
+    };
+  } catch (error: JwtError | any) {
+    console.error('Error at `userAuthentication`:', JSON.stringify(error));
+
+    return {
+      success: false,
+      error,
+    };
   }
 };
 
