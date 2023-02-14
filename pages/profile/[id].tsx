@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
-    profile(userId: $userId) {
+    getProfile(userId: $userId) {
       code
       success
       error {
@@ -23,8 +23,7 @@ const GET_PROFILE = gql`
         errorCode
         code
       }
-      message
-      data {
+      profile {
         bio
         isMyProfile
         user {
@@ -52,9 +51,8 @@ export default function Profile() {
       userId: Number(id),
     },
   });
-  console.log(data);
 
-  const profile = data && data.profile && data.profile.data;
+  const profile = data && data.getProfile && data.getProfile.profile;
 
   return (
     <Container>

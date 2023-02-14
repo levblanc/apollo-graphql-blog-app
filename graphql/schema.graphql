@@ -59,16 +59,16 @@ type Profile {
 
 type ProfileResponse implements Response {
   code: Int!
-  data: Profile
   error: ResponseError
   message: String
+  profile: Profile
   success: Boolean!
 }
 
 type Query {
+  getProfile(userId: Int!): ProfileResponse
   me: UserResponse
   posts: PostListResponse
-  profile(userId: Int!): ProfileResponse
 }
 
 interface Response {
