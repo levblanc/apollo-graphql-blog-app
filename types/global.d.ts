@@ -1,8 +1,12 @@
 import { PrismaClient } from '@prisma/client';
+import { ReactNode } from 'react';
 
 declare global {
   var prisma: PrismaClient;
 
+  interface IProviderProps {
+    children: ReactNode;
+  }
 
   type AuthResponse = {
     success: boolean;

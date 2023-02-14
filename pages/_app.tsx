@@ -6,6 +6,7 @@ import { MantineProvider } from '@mantine/core';
 import '@/styles/global.css';
 import AppHeader from '@/components/Header';
 import AppFooter from '@/components/Footer';
+import { AuthProvider } from '@/hooks/useAuth';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -27,11 +28,13 @@ export default function App({ Component, pageProps }: AppProps) {
             colorScheme: 'dark',
           }}
         >
-          <div className="appContainer">
-            <AppHeader />
-            <Component {...pageProps} />
-            <AppFooter />
-          </div>
+          <AuthProvider>
+            <div className="appContainer">
+              <AppHeader />
+              <Component {...pageProps} />
+              <AppFooter />
+            </div>
+          </AuthProvider>
         </MantineProvider>
       </ApolloProvider>
     </>
