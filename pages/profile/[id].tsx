@@ -11,7 +11,7 @@ import {
 import Error from '@/components/Error';
 import Post from '@/components/Post';
 import { useRouter } from 'next/router';
-import { TOKEN } from '@/utils/constants';
+import { useAuth } from '@/hooks/useAuth';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
@@ -45,6 +45,7 @@ const GET_PROFILE = gql`
 
 export default function Profile() {
   const router = useRouter();
+  const { updateAuthStatus } = useAuth();
   const { id } = router.query;
 
   const { data, error, loading } = useQuery(GET_PROFILE, {
@@ -61,8 +62,7 @@ export default function Profile() {
 
   if (data.getProfile.code === 400) {
     if (data.getProfile.error.code === '100') {
-      localStorage.removeItem(TOKEN);
-
+      updateAuthStatus({ username: '', token: '' });
       router.push('/login');
     }
   }

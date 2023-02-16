@@ -15,14 +15,17 @@ import { useEffect } from 'react';
 import emailValidator from '@/utils/emailValidator';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
-import { TOKEN } from '@/utils/constants';
+import { useAuth } from '@/hooks/useAuth';
 
 const SIGN_IN = gql`
   mutation Signin($credentials: CredentialsInput!) {
     signin(credentials: $credentials) {
-      token
       code
       success
+      token
+      user {
+        name
+      }
       error {
         name
         message
@@ -35,6 +38,8 @@ const SIGN_IN = gql`
 
 export default function SignIn() {
   const router = useRouter();
+  const { updateAuthStatus } = useAuth();
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -58,7 +63,11 @@ export default function SignIn() {
   useEffect(() => {
     if (data) {
       if (data.signin.token) {
-        localStorage.setItem(TOKEN, data.signin.token);
+        updateAuthStatus({
+          username: data.signin.user.name,
+          token: data.signin.token,
+        });
+
         router.push('/posts');
       }
     }

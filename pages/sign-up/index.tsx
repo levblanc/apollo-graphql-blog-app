@@ -16,7 +16,7 @@ import { useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
-import { TOKEN } from '@/utils/constants';
+import { useAuth } from '@/hooks/useAuth';
 
 const SIGN_UP = gql`
   mutation Signup(
@@ -29,6 +29,9 @@ const SIGN_UP = gql`
       message
       success
       token
+      user {
+        name
+      }
       error {
         name
         message
@@ -42,6 +45,7 @@ const SIGN_UP = gql`
 export default function SignUp() {
   const router = useRouter();
   const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
+  const { updateAuthStatus } = useAuth();
 
   const handleSubmit = async (values: typeof form.values) => {
     const { email, password, bio, name } = values;
@@ -58,7 +62,11 @@ export default function SignUp() {
   useEffect(() => {
     if (data) {
       if (data.signup.token) {
-        localStorage.setItem(TOKEN, data.signup.token);
+        updateAuthStatus({
+          username: data.signup.user.name,
+          token: data.signup.token,
+        });
+
         router.push('/posts');
       }
     }

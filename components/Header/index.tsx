@@ -6,27 +6,34 @@ import {
   Box,
   Burger,
   Drawer,
+  Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import useStyles from './styles';
-import { TOKEN } from '@/utils/constants';
-import { useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const { classes } = useStyles();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { username, updateAuthStatus, isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem(TOKEN));
-  }, []);
+  const logout = () => {
+    // TODO: invalidate token at server side also
+    updateAuthStatus({ username: '', token: '' });
+  };
 
   return (
-    <Box pb={120}>
+    <Box pb={80}>
       <Header height={80} p="md">
         <Group position="apart">
           <Title order={1}>Blog App</Title>
+          {isAuthenticated && (
+            <Group>
+              <Text>User: {username}</Text>
+              <Button onClick={logout}>Logout</Button>
+            </Group>
+          )}
           {!isAuthenticated && (
             <>
               <Group className={classes.hiddenMobile}>
