@@ -14,7 +14,7 @@ export const profile = queryField('getProfile', {
     { userId },
     { prisma, auth }
   ): Promise<ResolverResponse> {
-    if (auth && !auth.success) {
+    if (!auth.success) {
       return authError(auth);
     }
 

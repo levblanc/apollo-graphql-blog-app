@@ -3,6 +3,12 @@ import { errorResponse, successResponse } from '@/graphql/utils/response';
 import userAuthorization from '@/graphql/utils/userAuthorization';
 import { PostInput, PostResponse } from '@/graphql/typeDefs';
 import { unauthenticated } from '@/graphql/utils/errorMessage';
+import {
+  POST_CREATE_NO_TITLE_OR_CONTENT,
+  POST_ID_NOT_EXIST,
+  POST_UPDATE_NO_TITLE_OR_CONTENT,
+  UNAUTHENTICATED,
+} from '@/utils/constants';
 
 export const postCreate = mutationField('postCreate', {
   type: PostResponse,
@@ -11,16 +17,16 @@ export const postCreate = mutationField('postCreate', {
     const { title, content } = args.post!;
 
     if (!auth.success) {
-      const errMsg = unauthenticated(auth.error.message);
+      const message = unauthenticated(auth.error.message);
 
       return errorResponse({
-        error: new Error(errMsg),
+        error: Object.assign(UNAUTHENTICATED, { message }),
       });
     }
 
     if (!title || !content) {
       return errorResponse({
-        error: new Error('You must provide title and content to create a post'),
+        error: POST_NO_TITLE_OR_CONTENT,
       });
     }
 
@@ -48,10 +54,10 @@ export const postUpdate = mutationField('postUpdate', {
     const { content, title } = args.post!;
 
     if (!auth.success) {
-      const errMsg = unauthenticated(auth.error.message);
+      const message = unauthenticated(auth.error.message);
 
       return errorResponse({
-        error: new Error(errMsg),
+        error: Object.assign(UNAUTHENTICATED, { message }),
       });
     }
 
@@ -67,7 +73,7 @@ export const postUpdate = mutationField('postUpdate', {
 
     if (!title && !content) {
       return errorResponse({
-        error: new Error('You must provide title or content to update a post'),
+        error: POST_UPDATE_NO_TITLE_OR_CONTENT,
       });
     }
 
@@ -80,7 +86,7 @@ export const postUpdate = mutationField('postUpdate', {
 
       if (!existingPost) {
         return errorResponse({
-          error: new Error(`Post with id ${args.postId} not exist`),
+          error: POST_ID_NOT_EXIST,
         });
       }
 
@@ -120,10 +126,10 @@ export const postDelete = mutationField('postDelete', {
   ): Promise<ResolverResponse> {
     try {
       if (!auth.success) {
-        const errMsg = unauthenticated(auth.error.message);
+        const message = unauthenticated(auth.error.message);
 
         return errorResponse({
-          error: new Error(errMsg),
+          error: Object.assign(UNAUTHENTICATED, { message }),
         });
       }
 
@@ -145,7 +151,7 @@ export const postDelete = mutationField('postDelete', {
 
       if (!existingPost) {
         return errorResponse({
-          error: new Error(`Post with id ${postId} not exist`),
+          error: POST_ID_NOT_EXIST,
         });
       }
 
@@ -175,9 +181,10 @@ export const postPublish = mutationField('postPublish', {
     { prisma, auth }
   ): Promise<ResolverResponse> {
     if (!auth.success) {
-      const errMsg = unauthenticated(auth.error.message);
+      const message = unauthenticated(auth.error.message);
+
       return errorResponse({
-        error: new Error(errMsg),
+        error: Object.assign(UNAUTHENTICATED, { message }),
       });
     }
 
@@ -200,7 +207,7 @@ export const postPublish = mutationField('postPublish', {
 
       if (!existingPost) {
         return errorResponse({
-          error: new Error(`Post with id ${postId} not exist`),
+          error: POST_ID_NOT_EXIST,
         });
       }
 
@@ -235,10 +242,10 @@ export const postUnpublish = mutationField('postUnpublish', {
     { prisma, auth }
   ): Promise<ResolverResponse> {
     if (!auth.success) {
-      const errMsg = unauthenticated(auth.error.message);
+      const message = unauthenticated(auth.error.message);
 
       return errorResponse({
-        error: new Error(errMsg),
+        error: Object.assign(UNAUTHENTICATED, { message }),
       });
     }
 
@@ -261,7 +268,7 @@ export const postUnpublish = mutationField('postUnpublish', {
 
       if (!existingPost) {
         return errorResponse({
-          error: new Error(`Post with id ${postId} not exist`),
+          error: POST_ID_NOT_EXIST,
         });
       }
 

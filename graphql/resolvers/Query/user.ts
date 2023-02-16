@@ -8,7 +8,7 @@ import { UNAUTHENTICATED } from '@/utils/constants';
 export const me = queryField('me', {
   type: UserResponse,
   async resolve(_parent, __args, { prisma, auth }: GraphqlContext) {
-    if (auth && !auth.success) {
+    if (!auth.success) {
       const message = unauthenticated(auth.error.message);
 
       return errorResponse({

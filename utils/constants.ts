@@ -62,3 +62,21 @@ export const POST_NOT_OWNED_BY_USER = {
   errorCode: 'P102',
   message: 'Post not owned by this user.',
 };
+
+export const POST_CREATE_NO_TITLE_OR_CONTENT = {
+  name: 'Post Error',
+  errorCode: 'P103',
+  message: 'You must provide title and content to create a post.',
+};
+
+export const POST_UPDATE_NO_TITLE_OR_CONTENT = {
+  name: 'Post Error',
+  errorCode: 'P104',
+  message: 'You must provide title and content to update a post.',
+};
+
+export const POST_ID_NOT_EXIST = {
+  name: 'Post Error',
+  errorCode: 'P105',
+  message: 'Post ID not exist.',
+};
