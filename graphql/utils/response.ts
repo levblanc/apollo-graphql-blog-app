@@ -20,11 +20,16 @@ export const createResponse = ({
 
   if (!success) {
     response.code = 400;
-    response.message = error?.message;
-    response.error = error;
+
+    response.error = {
+      code: error.code,
+      errorCode: error.errorCode,
+      message: error.message,
+      name: error.name,
+    };
 
     if (!error) {
-      response.message = `error is ${JSON.stringify(error)}`;
+      response.error.message = `error is ${JSON.stringify(error)}`;
     }
   }
 
