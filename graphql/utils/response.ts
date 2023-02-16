@@ -53,3 +53,20 @@ export const successResponse = ({
 export const errorResponse = ({ error }: { error: any }): ResolverResponse => {
   return createResponse({ success: false, error });
 };
+
+export const authError = (auth: AuthResponse): ResolverResponse => {
+  let errMsg = 'Authentication Error';
+
+  switch (auth.error.name) {
+    case 'TokenExpiredError':
+      errMsg = 'Login session expired. Please login again.';
+      break;
+
+    default:
+      break;
+  }
+
+  return errorResponse({
+    error: { code: '100', name: 'Session Expired', message: errMsg },
+  });
+};
