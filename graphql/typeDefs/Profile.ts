@@ -8,8 +8,8 @@ export const Profile = objectType({
     t.string('bio');
     t.int('userId');
     t.boolean('isMyProfile', {
-      resolve({ userId: id }, _args, { userId }) {
-        return id === userId;
+      resolve({ userId: id }, _args, { auth }) {
+        return id === auth?.userId;
       },
     });
     t.field('user', {

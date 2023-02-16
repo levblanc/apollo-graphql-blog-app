@@ -11,6 +11,7 @@ import {
 import Error from '@/components/Error';
 import Post from '@/components/Post';
 import { useRouter } from 'next/router';
+import { TOKEN } from '@/utils/constants';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
@@ -54,52 +55,58 @@ export default function Profile() {
 
   const profile = data && data.getProfile && data.getProfile.profile;
 
+  if (loading) return <Loader />;
+
+  if (error) return <Error message={error.message} />;
+
+  if (data.getProfile.code === 400) {
+    if (data.getProfile.error.code === '100') {
+      localStorage.removeItem(TOKEN);
+
+      router.push('/login');
+    }
+  }
+
   return (
     <Container>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Error message={error.message} />
-      ) : (
-        profile && (
-          <>
-            <Group
-              position="apart"
-              mb="md"
-              sx={{ borderBottom: '1px solid grey' }}
-            >
-              <Box mb="sm" p="md">
-                <Title order={2} mb="sm">
-                  {profile.user.name}
-                </Title>
-                <Text color="dimmed">{profile.bio}</Text>
-              </Box>
-              {profile.isMyProfile ? (
-                <Button onClick={() => router.push('/write')}>
-                  Create New Post
-                </Button>
-              ) : null}
-            </Group>
-            {profile.user.posts && !!profile.user.posts.length ? (
-              profile.user.posts.map((post: PostData) => (
-                <Post
-                  key={post.id}
-                  id={post.id}
-                  title={post.title}
-                  content={post.content}
-                  createdAt={post.createdAt}
-                  authorName={profile.user.name}
-                  published={post.published}
-                  isMyProfile={profile.isMyProfile}
-                />
-              ))
-            ) : (
-              <Text align="center" color="dimmed">
-                No posts created yet.
-              </Text>
-            )}
-          </>
-        )
+      {profile && (
+        <>
+          <Group
+            position="apart"
+            mb="md"
+            sx={{ borderBottom: '1px solid grey' }}
+          >
+            <Box mb="sm" p="md">
+              <Title order={2} mb="sm">
+                {profile.user.name}
+              </Title>
+              <Text color="dimmed">{profile.bio}</Text>
+            </Box>
+            {profile.isMyProfile ? (
+              <Button onClick={() => router.push('/write')}>
+                Create New Post
+              </Button>
+            ) : null}
+          </Group>
+          {profile.user.posts && !!profile.user.posts.length ? (
+            profile.user.posts.map((post: PostData) => (
+              <Post
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                content={post.content}
+                createdAt={post.createdAt}
+                authorName={profile.user.name}
+                published={post.published}
+                isMyProfile={profile.isMyProfile}
+              />
+            ))
+          ) : (
+            <Text align="center" color="dimmed">
+              No posts created yet.
+            </Text>
+          )}
+        </>
       )}
     </Container>
   );
