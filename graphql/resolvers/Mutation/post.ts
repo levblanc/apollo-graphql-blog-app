@@ -26,7 +26,7 @@ export const postCreate = mutationField('postCreate', {
 
     if (!title || !content) {
       return errorResponse({
-        error: POST_NO_TITLE_OR_CONTENT,
+        error: POST_CREATE_NO_TITLE_OR_CONTENT,
       });
     }
 
