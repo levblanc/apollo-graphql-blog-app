@@ -9,12 +9,11 @@ type JwtError = {
 const userAuthentication = (jwt: string): AuthResponse => {
   try {
     const signature: Secret = process.env.JWT_SIGNATURE!;
-    const tokenInfo = JWT.verify(jwt, signature);
-    console.log('>>>>>> tokenInfo in userAuthentication', tokenInfo);
+    const { userId } = JWT.verify(jwt, signature) as JWT.JwtPayload;
 
     return {
       success: true,
-      userId: tokenInfo.userId,
+      userId,
     };
   } catch (error: JwtError | any) {
     console.error('Error at `userAuthentication`:', JSON.stringify(error));
