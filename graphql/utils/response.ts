@@ -1,3 +1,5 @@
+import { SESSION_EXPIRED } from '@/utils/constants';
+
 type ResponseParam = {
   success: boolean;
   data?: any;
@@ -55,11 +57,17 @@ export const errorResponse = ({ error }: { error: any }): ResolverResponse => {
 };
 
 export const authError = (auth: AuthResponse): ResolverResponse => {
-  let errMsg = 'Authentication Error';
+  let error = {
+    name: 'Authentication Error',
+    errMsg: 'Authentication Error',
+    errCode: 'A000',
+  };
+
+  let targetErr = null;
 
   switch (auth.error.name) {
     case 'TokenExpiredError':
-      errMsg = 'Login session expired. Please login again.';
+      targetErr = SESSION_EXPIRED;
       break;
 
     default:
@@ -67,6 +75,6 @@ export const authError = (auth: AuthResponse): ResolverResponse => {
   }
 
   return errorResponse({
-    error: { code: '100', name: 'Session Expired', message: errMsg },
+    error: Object.assign(error, targetErr),
   });
 };
