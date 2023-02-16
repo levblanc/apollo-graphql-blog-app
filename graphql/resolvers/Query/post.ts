@@ -2,7 +2,7 @@ import { queryField } from 'nexus';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { PostListResponse } from '@/graphql/typeDefs';
 
-export const posts = queryField('posts', {
+export const posts = queryField('getPosts', {
   type: PostListResponse,
   async resolve(_parent, __args, { prisma }): Promise<ResolverResponse> {
     try {
@@ -12,7 +12,7 @@ export const posts = queryField('posts', {
       });
 
       return successResponse({
-        data: posts,
+        data: { posts },
       });
     } catch (error) {
       return errorResponse({

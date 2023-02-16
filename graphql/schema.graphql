@@ -35,17 +35,17 @@ input PostInput {
 
 type PostListResponse implements Response {
   code: Int!
-  data: [Post]
   error: ResponseError
   message: String
+  posts: [Post]
   success: Boolean!
 }
 
 type PostResponse implements Response {
   code: Int!
-  data: Post
   error: ResponseError
   message: String
+  post: Post
   success: Boolean!
 }
 
@@ -66,9 +66,9 @@ type ProfileResponse implements Response {
 }
 
 type Query {
+  getPosts: PostListResponse
   getProfile(userId: Int!): ProfileResponse
   me: UserResponse
-  posts: PostListResponse
 }
 
 interface Response {

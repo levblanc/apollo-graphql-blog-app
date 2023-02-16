@@ -33,7 +33,7 @@ export const PostResponse = objectType({
   name: 'PostResponse',
   definition(t) {
     t.implements('Response');
-    t.field('data', { type: Post });
+    t.field('post', { type: Post });
   },
 });
 
@@ -41,6 +41,6 @@ export const PostListResponse = objectType({
   name: 'PostListResponse',
   definition(t) {
     t.implements('Response');
-    t.list.field('data', { type: Post });
+    t.list.field('posts', { type: Post });
   },
 });

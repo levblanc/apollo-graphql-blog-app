@@ -4,8 +4,8 @@ import { gql, useQuery } from '@apollo/client';
 import { Container, Loader } from '@mantine/core';
 
 const GET_POSTS = gql`
-  query Posts {
-    posts {
+  query GetPosts {
+    getPosts {
       code
       success
       error {
@@ -15,7 +15,7 @@ const GET_POSTS = gql`
         code
       }
       message
-      data {
+      posts {
         author {
           name
         }
@@ -31,7 +31,7 @@ const GET_POSTS = gql`
 
 export default function Posts() {
   const { data, error, loading } = useQuery(GET_POSTS);
-  const posts = data && data.posts && data.posts.data;
+  const posts = data && data.getPosts && data.getPosts.posts;
 
   return (
     <Container>
