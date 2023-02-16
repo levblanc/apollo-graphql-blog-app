@@ -13,6 +13,12 @@ export const UNAUTHENTICATED = {
   message: 'Forbidden access (unauthenticated).',
 };
 
+export const NO_AUTHORIZATION_HEADER = {
+  name: 'Authentication Error',
+  errorCode: 'A103',
+  message: '`Authorization` header not exist.',
+};
+
 // User Error
 export const USER_NOT_FOUND = {
   name: 'User Error',
