@@ -19,7 +19,7 @@ export const me = queryField('me', {
     try {
       const user = await prisma.user.findUnique({
         where: {
-          id: auth?.userId,
+          id: Number(auth?.userId),
         },
       });
 
