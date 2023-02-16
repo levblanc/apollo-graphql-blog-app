@@ -6,7 +6,7 @@ type JwtError = {
   expiredAt?: string;
 };
 
-const userAuthentication = (jwt: string): AuthResponse | null => {
+const userAuthentication = (jwt: string): AuthResponse => {
   try {
     const signature: Secret = process.env.JWT_SIGNATURE!;
     const tokenInfo = JWT.verify(jwt, signature);
