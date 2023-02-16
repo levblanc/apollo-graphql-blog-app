@@ -1,5 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
+import {
+  POST_NOT_FOUND,
+  POST_NOT_OWNED_BY_USER,
+  USER_NOT_FOUND,
+} from '@/utils/constants';
 
 const userAuthorization = async ({
   userId,
@@ -19,7 +24,7 @@ const userAuthorization = async ({
 
     if (!user) {
       return errorResponse({
-        error: new Error('User not found.'),
+        error: USER_NOT_FOUND,
       });
     }
 
@@ -27,13 +32,13 @@ const userAuthorization = async ({
 
     if (!post) {
       return errorResponse({
-        error: new Error('Post not found'),
+        error: POST_NOT_FOUND,
       });
     }
 
     if (post?.authorId !== user.id) {
       return errorResponse({
-        error: new Error('Post not owned by this user'),
+        error: POST_NOT_OWNED_BY_USER,
       });
     }
 

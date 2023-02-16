@@ -4,6 +4,12 @@ import bcrypt from 'bcryptjs';
 import JWT, { Secret } from 'jsonwebtoken';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { UserResponse, CredentialsInput } from '@/graphql/typeDefs/User';
+import {
+  INVALID_CREDENTIIALS,
+  INVALID_EMAIL,
+  INVALID_PASSWORD,
+  INVALID_USER_BIO,
+} from '@/utils/constants';
 
 const createToken = async ({
   userId,
@@ -37,7 +43,7 @@ export const signup = mutationField('signup', {
 
       if (!isEmail) {
         return errorResponse({
-          error: new Error('Invalid email'),
+          error: INVALID_EMAIL,
         });
       }
 
@@ -45,7 +51,7 @@ export const signup = mutationField('signup', {
 
       if (!isValidPassword) {
         return errorResponse({
-          error: new Error('Invalid password, length less than 5'),
+          error: INVALID_PASSWORD,
         });
       }
 
@@ -53,7 +59,7 @@ export const signup = mutationField('signup', {
 
       if (!bio) {
         return errorResponse({
-          error: new Error(`Invalid user bio: ${bio}`),
+          error: INVALID_USER_BIO,
         });
       }
 
@@ -98,7 +104,7 @@ export const signin = mutationField('signin', {
 
       if (!user) {
         return errorResponse({
-          error: new Error('Invalid credentials'),
+          error: INVALID_CREDENTIIALS,
         });
       }
 
@@ -106,7 +112,7 @@ export const signin = mutationField('signin', {
 
       if (!isMatch) {
         return errorResponse({
-          error: new Error('Invalid credentials'),
+          error: INVALID_CREDENTIIALS,
         });
       }
 

@@ -59,8 +59,8 @@ export const errorResponse = ({ error }: { error: any }): ResolverResponse => {
 export const authError = (auth: AuthResponse): ResolverResponse => {
   let error = {
     name: 'Authentication Error',
-    errMsg: 'Authentication Error',
-    errCode: 'A000',
+    message: 'Authentication Error',
+    errorCode: 'A000',
   };
 
   let targetErr = null;

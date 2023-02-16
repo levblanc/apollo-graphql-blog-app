@@ -3,15 +3,16 @@ import { unauthenticated } from '@/graphql/utils/errorMessage';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
 import { queryField } from 'nexus';
 import { GraphqlContext } from '@/graphql/context';
+import { UNAUTHENTICATED } from '@/utils/constants';
 
 export const me = queryField('me', {
   type: UserResponse,
   async resolve(_parent, __args, { prisma, auth }: GraphqlContext) {
-    if (!auth?.success) {
-      const errMsg = unauthenticated(auth?.error.message);
+    if (auth && !auth.success) {
+      const message = unauthenticated(auth.error.message);
 
       return errorResponse({
-        error: new Error(errMsg),
+        error: Object.assign(UNAUTHENTICATED, { message }),
       });
     }
 
