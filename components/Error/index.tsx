@@ -1,14 +1,9 @@
-import { Paper, Text, Title } from '@mantine/core';
+import { Alert } from '@mantine/core';
 
 export default function Error({ message }: { message: string }) {
   return (
-    <Paper withBorder shadow="md" p="md" radius="md" mb="md">
-      <Title order={4} color="red">
-        ERROR:
-      </Title>
-      <Text fz="lg" c="red">
-        {message}
-      </Text>
-    </Paper>
+    <Alert title="ERROR" color="red" mb="md">
+      {message}
+    </Alert>
   );
 }
