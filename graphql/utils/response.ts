@@ -63,18 +63,15 @@ export const authError = (auth: AuthResponse): ResolverResponse => {
     errorCode: 'A000',
   };
 
-  let targetErr = null;
-
   switch (auth.error.name) {
     case 'TokenExpiredError':
-      targetErr = SESSION_EXPIRED;
+      error = SESSION_EXPIRED;
       break;
 
     default:
+      console.error('Unknown auth error in `authError` function.');
       break;
   }
 
-  return errorResponse({
-    error: Object.assign(error, targetErr),
-  });
+  return errorResponse({ error });
 };
