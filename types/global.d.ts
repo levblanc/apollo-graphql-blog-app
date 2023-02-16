@@ -24,7 +24,6 @@ declare global {
   type ResolverResponse = {
     code: number;
     success: boolean;
-    message?: string;
     token?: string;
     data: any | null;
     error: ResolverError | null;
