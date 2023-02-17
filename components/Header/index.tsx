@@ -63,59 +63,57 @@ export default function AppHeader() {
         <Group position="apart">
           <Title order={1}>Blog App</Title>
 
-          {isAuthenticated && (
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <UnstyledButton>
-                  <Group>
-                    <Avatar size={40} color="blue">
-                      {username.slice(0, 1).toUpperCase()}
-                    </Avatar>
-                    <div>
-                      <Text>{username}</Text>
-                      <Text size="xs" color="dimmed">
-                        {email}
-                      </Text>
-                    </div>
-                  </Group>
-                </UnstyledButton>
-              </Menu.Target>
+          {isAuthenticated ? (
+            <Box className={classes.hiddenMobile}>
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <UnstyledButton>
+                    <Group>
+                      <Avatar size={40} color="blue">
+                        {username.slice(0, 1).toUpperCase()}
+                      </Avatar>
+                      <div>
+                        <Text>{username}</Text>
+                        <Text size="xs" color="dimmed">
+                          {email}
+                        </Text>
+                      </div>
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
 
-              <Menu.Dropdown>
-                <Menu.Item onClick={() => goToProfile(userId)}>
-                  Profile
-                </Menu.Item>
+                <Menu.Dropdown>
+                  <Menu.Item onClick={() => goToProfile(userId)}>
+                    Profile
+                  </Menu.Item>
 
-                <Menu.Divider />
+                  <Menu.Divider />
 
-                <Menu.Item color="red" onClick={logout}>
-                  Logout
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+                  <Menu.Item color="red" onClick={logout}>
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Box>
+          ) : (
+            <Group className={classes.hiddenMobile}>
+              <Button
+                component="a"
+                variant="default"
+                onClick={() => pathRedirect('login')}
+              >
+                Log in
+              </Button>
+              <Button component="a" onClick={() => pathRedirect('signup')}>
+                Sign up
+              </Button>
+            </Group>
           )}
-
-          {!isAuthenticated && (
-            <>
-              <Group className={classes.hiddenMobile}>
-                <Button
-                  component="a"
-                  variant="default"
-                  onClick={() => pathRedirect('login')}
-                >
-                  Log in
-                </Button>
-                <Button component="a" onClick={() => pathRedirect('signup')}>
-                  Sign up
-                </Button>
-              </Group>
-              <Burger
-                opened={drawerOpened}
-                onClick={toggleDrawer}
-                className={classes.hiddenDesktop}
-              />
-            </>
-          )}
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            className={classes.hiddenDesktop}
+          />
         </Group>
       </Header>
 
@@ -128,14 +126,47 @@ export default function AppHeader() {
         className={classes.hiddenDesktop}
         zIndex={1000000}
       >
-        <Group position="center" grow pb="xl" px="md">
-          <Button component="a" variant="default" href="/login">
-            Log in
-          </Button>
-          <Button component="a" href="/sign-up">
-            Sign up
-          </Button>
-        </Group>
+        {isAuthenticated ? (
+          <Menu>
+            <Group>
+              <Avatar size={40} color="blue">
+                {username.slice(0, 1).toUpperCase()}
+              </Avatar>
+              <div>
+                <Text>{username}</Text>
+                <Text size="xs" color="dimmed">
+                  {email}
+                </Text>
+              </div>
+            </Group>
+            <Button
+              fullWidth
+              mt="md"
+              mb="md"
+              variant="light"
+              onClick={() => goToProfile(userId)}
+            >
+              Profile
+            </Button>
+
+            <Button color="red" fullWidth variant="light" onClick={logout}>
+              Logout
+            </Button>
+          </Menu>
+        ) : (
+          <Group position="center" grow pb="xl" px="md">
+            <Button
+              component="a"
+              variant="default"
+              onClick={() => pathRedirect('login')}
+            >
+              Log in
+            </Button>
+            <Button component="a" onClick={() => pathRedirect('signup')}>
+              Sign up
+            </Button>
+          </Group>
+        )}
       </Drawer>
     </Box>
   );
