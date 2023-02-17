@@ -11,6 +11,7 @@ import {
 import Error from '@/components/Error';
 import Post from '@/components/Post';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
@@ -46,11 +47,15 @@ export default function Profile() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, error, loading } = useQuery(GET_PROFILE, {
+  const { data, error, loading, refetch } = useQuery(GET_PROFILE, {
     variables: {
       userId: Number(id),
     },
   });
+
+  useEffect(() => {
+    refetch({ userId: Number(id) });
+  }, []);
 
   const profile = data?.getProfile?.profile;
 
