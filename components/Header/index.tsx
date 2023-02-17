@@ -1,4 +1,7 @@
 import {
+  Avatar,
+  UnstyledButton,
+  Menu,
   Header,
   Title,
   Group,
@@ -17,7 +20,8 @@ export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const { classes } = useStyles();
-  const { username, updateAuthStatus, isAuthenticated } = useAuth();
+  const { userId, username, email, clearAuthStatus, isAuthenticated } =
+    useAuth();
   const router = useRouter();
 
   const pathRedirect = (action: string): void => {
@@ -44,9 +48,13 @@ export default function AppHeader() {
     router.push(path);
   };
 
+  const goToProfile = (userId: string): void => {
+    router.push(`/profile/${userId}`);
+  };
+
   const logout = () => {
-    // TODO: invalidate token at server side also
-    updateAuthStatus({ username: '', token: '' });
+    clearAuthStatus();
+    router.push('/login');
   };
 
   return (
@@ -54,12 +62,39 @@ export default function AppHeader() {
       <Header height={80} p="md">
         <Group position="apart">
           <Title order={1}>Blog App</Title>
+
           {isAuthenticated && (
-            <Group>
-              <Text>User: {username}</Text>
-              <Button onClick={logout}>Logout</Button>
-            </Group>
+            <Menu shadow="md" width={200}>
+              <Menu.Target>
+                <UnstyledButton>
+                  <Group>
+                    <Avatar size={40} color="blue">
+                      {username.slice(0, 1).toUpperCase()}
+                    </Avatar>
+                    <div>
+                      <Text>{username}</Text>
+                      <Text size="xs" color="dimmed">
+                        {email}
+                      </Text>
+                    </div>
+                  </Group>
+                </UnstyledButton>
+              </Menu.Target>
+
+              <Menu.Dropdown>
+                <Menu.Item onClick={() => goToProfile(userId)}>
+                  Profile
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Item color="red" onClick={logout}>
+                  Logout
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           )}
+
           {!isAuthenticated && (
             <>
               <Group className={classes.hiddenMobile}>
