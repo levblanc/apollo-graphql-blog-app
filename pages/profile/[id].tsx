@@ -56,13 +56,6 @@ export default function Profile() {
 
   const profile = data && data.getProfile && data.getProfile.profile;
 
-  if (data.getProfile.code === 400) {
-    if (data.getProfile.error.code === '100') {
-      updateAuthStatus({ username: '', token: '' });
-      router.push('/login');
-    }
-  }
-
   return (
     <Container>
       {loading ? (
