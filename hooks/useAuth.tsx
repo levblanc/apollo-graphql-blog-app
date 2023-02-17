@@ -28,6 +28,7 @@ export const AuthProvider: FC<IProviderProps> = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // TODO: check user session if there's token in localstorage
   const updateAuthStatus = ({ userId, username, email, token }: AuthStatus) => {
     setUserInfo({ userId, username, email });
     setIsAuthenticated(true);
