@@ -2,35 +2,50 @@ import { TOKEN } from '@/utils/constants';
 import { FC, createContext, useState, useContext } from 'react';
 
 type AuthStatus = {
+  userId: string;
   username: string;
+  email: string;
   token: string;
 };
 
 type AuthContextType = {
+  userId: string;
   username: string;
+  email: string;
   isAuthenticated: boolean;
   updateAuthStatus: (authParam: AuthStatus) => void;
+  clearAuthStatus: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: FC<IProviderProps> = ({ children }) => {
-  const [username, setUsername] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    userId: '',
+    username: '',
+    email: '',
+  });
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const updateAuthStatus = ({ username, token }: AuthStatus) => {
-    setUsername(username);
-    setIsAuthenticated(!!token);
+  const updateAuthStatus = ({ userId, username, email, token }: AuthStatus) => {
+    setUserInfo({ userId, username, email });
+    setIsAuthenticated(true);
+    localStorage.setItem(TOKEN, token);
+  };
 
-    !!token
-      ? localStorage.setItem(TOKEN, token)
-      : localStorage.removeItem(TOKEN);
+  // TODO: invalidate token at server side also
+  const clearAuthStatus = () => {
+    setUserInfo({ userId: '', username: '', email: '' });
+    setIsAuthenticated(false);
+    localStorage.removeItem(TOKEN);
   };
 
   const providerValue = {
-    username,
+    ...userInfo,
     isAuthenticated,
     updateAuthStatus,
+    clearAuthStatus,
   };
 
   return (
