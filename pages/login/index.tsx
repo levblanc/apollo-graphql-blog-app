@@ -24,7 +24,9 @@ const SIGN_IN = gql`
       success
       token
       user {
+        id
         name
+        email
       }
       error {
         name
@@ -64,7 +66,9 @@ export default function SignIn() {
     if (data) {
       if (data.signin.token) {
         updateAuthStatus({
+          userId: data.signin.user.id,
           username: data.signin.user.name,
+          email: data.signin.user.email,
           token: data.signin.token,
         });
 

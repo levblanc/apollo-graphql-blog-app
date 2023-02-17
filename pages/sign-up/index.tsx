@@ -30,7 +30,9 @@ const SIGN_UP = gql`
       success
       token
       user {
+        id
         name
+        email
       }
       error {
         name
@@ -63,7 +65,9 @@ export default function SignUp() {
     if (data) {
       if (data.signup.token) {
         updateAuthStatus({
+          userId: data.signup.user.id,
           username: data.signup.user.name,
+          email: data.signup.user.email,
           token: data.signup.token,
         });
 
