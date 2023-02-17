@@ -1,4 +1,4 @@
-import { SESSION_EXPIRED } from '@/utils/constants';
+import { SESSION_EXPIRED, NO_AUTHORIZATION_HEADER } from '@/utils/constants';
 
 type ResponseParam = {
   success: boolean;
@@ -68,8 +68,14 @@ export const authError = (auth: AuthResponse): ResolverResponse => {
       error = SESSION_EXPIRED;
       break;
 
+    case 'NoAuthenticationHeader':
+      error = NO_AUTHORIZATION_HEADER;
+      break;
+
     default:
-      console.error('Unknown auth error in `authError` function.');
+      console.error(
+        '>>>>>> ERROR: Unknown auth error in `authError` function.'
+      );
       break;
   }
 
