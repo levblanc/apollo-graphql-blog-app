@@ -68,7 +68,13 @@ export default function SignIn() {
           token: data.signin.token,
         });
 
-        router.back();
+        let path = '/posts';
+
+        if (router.query.redirect) {
+          path = router.query.redirect as string;
+        }
+
+        router.push(path);
       }
     }
   }, [data]);

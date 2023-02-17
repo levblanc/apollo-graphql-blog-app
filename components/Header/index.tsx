@@ -11,12 +11,38 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import useStyles from './styles';
 import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/router';
 
 export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const { classes } = useStyles();
   const { username, updateAuthStatus, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const pathRedirect = (action: string): void => {
+    const encodedPath = encodeURIComponent(router.asPath);
+    let path = '/posts';
+    let query = `?redirect=${encodedPath}`;
+
+    if (router.asPath === '/sign-up' || router.asPath === '/login') {
+      query = '';
+    }
+
+    switch (action) {
+      case 'login':
+        path = `/login${query}`;
+        break;
+      case 'signup':
+        path = `/sign-up${query}`;
+        break;
+      default:
+        console.error('ERROR: Unknown action in `pathRedirect` function');
+        break;
+    }
+
+    router.push(path);
+  };
 
   const logout = () => {
     // TODO: invalidate token at server side also
@@ -37,10 +63,14 @@ export default function AppHeader() {
           {!isAuthenticated && (
             <>
               <Group className={classes.hiddenMobile}>
-                <Button component="a" variant="default" href="/login">
+                <Button
+                  component="a"
+                  variant="default"
+                  onClick={() => pathRedirect('login')}
+                >
                   Log in
                 </Button>
-                <Button component="a" href="/sign-up">
+                <Button component="a" onClick={() => pathRedirect('signup')}>
                   Sign up
                 </Button>
               </Group>
