@@ -90,7 +90,13 @@ export default function SignUp() {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Container size={500} my={40}>
         {error && <Error message={error.message} />}
-        {data?.signup?.error && <Error message={data.signup.error.message} />}
+
+        {data?.signup?.error && (
+          <Error
+            code={data.signup.error.errorCode || data.signup.error.code}
+            message={data.signup.error.message}
+          />
+        )}
 
         <Title
           order={2}

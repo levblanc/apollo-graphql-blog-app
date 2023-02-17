@@ -126,15 +126,30 @@ export default function Post({
         </Group>
         <Text>{content}</Text>
       </Card>
-      {publishData?.postPublish.error && (
-        <Error message={publishData.postPublish.error.message} />
-      )}
+
       {publishError && <Error message={publishError.message} />}
 
-      {unpublishData?.postUnpublish.error && (
-        <Error message={unpublishData.postUnpublish.error.message} />
+      {publishData?.postPublish.error && (
+        <Error
+          code={
+            publishData.postPublish.error.errorCode ||
+            publishData.postPublish.error.code
+          }
+          message={publishData.postPublish.error.message}
+        />
       )}
+
       {unpublishError && <Error message={unpublishError.message} />}
+
+      {unpublishData?.postUnpublish.error && (
+        <Error
+          code={
+            unpublishData.postPublish.error.errorCode ||
+            unpublishData.postPublish.error.code
+          }
+          message={unpublishData.postUnpublish.error.message}
+        />
+      )}
     </Box>
   );
 }

@@ -11,7 +11,6 @@ import {
 import Error from '@/components/Error';
 import Post from '@/components/Post';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/hooks/useAuth';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
@@ -45,7 +44,6 @@ const GET_PROFILE = gql`
 
 export default function Profile() {
   const router = useRouter();
-  const { updateAuthStatus } = useAuth();
   const { id } = router.query;
 
   const { data, error, loading } = useQuery(GET_PROFILE, {
@@ -54,7 +52,7 @@ export default function Profile() {
     },
   });
 
-  const profile = data && data.getProfile && data.getProfile.profile;
+  const profile = data?.getProfile?.profile;
 
   return (
     <Container>
@@ -62,6 +60,11 @@ export default function Profile() {
         <Loader />
       ) : error ? (
         <Error message={error.message} />
+      ) : data?.getProfile?.error ? (
+        <Error
+          code={data.getProfile.error.errorCode || data.getProfile.error.code}
+          message={data.getProfile.error.message}
+        />
       ) : (
         profile && (
           <>

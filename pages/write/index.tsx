@@ -71,11 +71,14 @@ export default function Write() {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Container>
-        {data?.postCreate?.error && (
-          <Error message={data.postCreate.error.message} />
-        )}
-
         {error && <Error message={error.message} />}
+
+        {data?.postCreate?.error && (
+          <Error
+            code={data.postCreate.error.errorCode || data.postCreate.error.code}
+            message={data.postCreate.error.message}
+          />
+        )}
 
         <Title
           order={2}

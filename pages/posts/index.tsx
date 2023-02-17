@@ -31,7 +31,7 @@ const GET_POSTS = gql`
 
 export default function Posts() {
   const { data, error, loading } = useQuery(GET_POSTS);
-  const posts = data && data.getPosts && data.getPosts.posts;
+  const posts = data?.getPosts?.posts;
 
   return (
     <Container>
@@ -39,6 +39,11 @@ export default function Posts() {
         <Loader />
       ) : error ? (
         <Error message={error.message} />
+      ) : data?.getPosts?.error ? (
+        <Error
+          code={data.getPosts.error.errorCode || data.getPosts.error.code}
+          message={data.getPosts.error.message}
+        />
       ) : (
         posts &&
         posts.length &&

@@ -68,7 +68,7 @@ export default function SignIn() {
           token: data.signin.token,
         });
 
-        router.push('/posts');
+        router.back();
       }
     }
   }, [data]);
@@ -77,7 +77,14 @@ export default function SignIn() {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Container size={500} my={40}>
         {error && <Error message={error.message} />}
-        {data?.signin?.error && <Error message={data.signin.error.message} />}
+
+        {data?.signin?.error && (
+          <Error
+            code={data.signin.error.errorCode || data.signin.error.code}
+            message={data.signin.error.message}
+          />
+        )}
+
         <Title
           order={2}
           align="center"
