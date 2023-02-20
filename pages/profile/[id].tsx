@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
   Box,
   Button,
@@ -13,37 +13,7 @@ import Post from '@/components/Post';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-
-const GET_PROFILE = gql`
-  query Profile($userId: Int!) {
-    getProfile(userId: $userId) {
-      code
-      success
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-      profile {
-        bio
-        isMyProfile
-        user {
-          id
-          name
-          email
-          posts {
-            id
-            title
-            content
-            createdAt
-            published
-          }
-        }
-      }
-    }
-  }
-`;
+import { GET_PROFILE } from './gql';
 
 export default function Profile() {
   const router = useRouter();
