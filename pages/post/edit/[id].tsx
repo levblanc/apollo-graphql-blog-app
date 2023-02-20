@@ -49,6 +49,8 @@ export default function ViewPost() {
         post: values,
       },
     });
+
+    router.back();
   };
 
   useEffect(() => {
@@ -91,6 +93,7 @@ export default function ViewPost() {
                 placeholder="Post Title"
                 size="md"
                 required
+                disabled={updateLoading}
                 {...form.getInputProps('title')}
               />
               <Divider mt="md" mb="md" />
@@ -99,12 +102,13 @@ export default function ViewPost() {
                   By {post.author.name}
                 </Text>
                 <Text color="dimmed" size="sm" italic>
-                  Created At {dateFormatter(post.createdAt)}
+                  Last Updated At: {dateFormatter(post.updatedAt)}
                 </Text>
               </Group>
               <Textarea
                 placeholder="Post Content"
                 required
+                disabled={updateLoading}
                 {...form.getInputProps('content')}
               />
               <Group position="right" mt="xl">

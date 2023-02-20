@@ -37,7 +37,7 @@ export default function ViewPost() {
                 By {post.author.name}
               </Text>
               <Text color="dimmed" size="sm" italic>
-                Created At {dateFormatter(post.createdAt)}
+                Last Updated At {dateFormatter(post.updatedAt)}
               </Text>
             </Group>
             <Text>{post.content}</Text>
