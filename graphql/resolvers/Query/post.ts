@@ -1,6 +1,26 @@
-import { queryField } from 'nexus';
+import { intArg, nonNull, queryField } from 'nexus';
 import { errorResponse, successResponse } from '@/graphql/utils/response';
-import { PostListResponse } from '@/graphql/typeDefs';
+import { PostListResponse, PostResponse } from '@/graphql/typeDefs';
+
+export const post = queryField('getPost', {
+  type: PostResponse,
+  args: {
+    postId: nonNull(intArg()),
+  },
+  async resolve(_parent, { postId }, { prisma }): Promise<ResolverResponse> {
+    try {
+      const post = await prisma.post.findUnique({
+        where: { id: postId },
+      });
+
+      return successResponse({
+        data: { post },
+      });
+    } catch (error) {
+      return errorResponse({ error });
+    }
+  },
+});
 
 export const posts = queryField('getPosts', {
   type: PostListResponse,

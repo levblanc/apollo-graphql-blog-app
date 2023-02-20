@@ -66,6 +66,7 @@ type ProfileResponse implements Response {
 }
 
 type Query {
+  getPost(postId: Int!): PostResponse
   getPosts: PostListResponse
   getProfile(userId: Int!): ProfileResponse
   me: UserResponse
