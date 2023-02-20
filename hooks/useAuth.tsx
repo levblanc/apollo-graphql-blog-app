@@ -5,7 +5,7 @@ type AuthStatus = {
   userId: string;
   username: string;
   email: string;
-  token: string;
+  token?: string;
 };
 
 type AuthContextType = {
@@ -28,11 +28,11 @@ export const AuthProvider: FC<IProviderProps> = ({ children }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // TODO: check user session if there's token in localstorage
+  // TODO: check user session validity if there's token in localStorage
   const updateAuthStatus = ({ userId, username, email, token }: AuthStatus) => {
     setUserInfo({ userId, username, email });
     setIsAuthenticated(true);
-    localStorage.setItem(TOKEN, token);
+    token && localStorage.setItem(TOKEN, token);
   };
 
   // TODO: invalidate token at server side also

@@ -12,6 +12,7 @@ import Error from '@/components/Error';
 import Post from '@/components/Post';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 const GET_PROFILE = gql`
   query Profile($userId: Int!) {
@@ -30,6 +31,7 @@ const GET_PROFILE = gql`
         user {
           id
           name
+          email
           posts {
             id
             title
@@ -47,17 +49,27 @@ export default function Profile() {
   const router = useRouter();
   const { id } = router.query;
 
+  const { updateAuthStatus, clearAuthStatus } = useAuth();
   const { data, error, loading, refetch } = useQuery(GET_PROFILE, {
     variables: {
       userId: Number(id),
     },
   });
 
-  useEffect(() => {
-    refetch({ userId: Number(id) });
-  });
-
   const profile = data?.getProfile?.profile;
+
+  useEffect(() => {
+    if (profile) {
+      if (profile.isMyProfile) {
+        const { id, name, email } = profile.user;
+        updateAuthStatus({ userId: id, username: name, email });
+      } else {
+        clearAuthStatus();
+      }
+    }
+
+    refetch({ userId: Number(id) });
+  }, [profile, id]);
 
   return (
     <Container>
