@@ -11,7 +11,7 @@ export const GET_POST = gql`
         }
         title
         content
-        createdAt
+        updatedAt
       }
     }
   }
