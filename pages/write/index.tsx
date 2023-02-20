@@ -24,7 +24,7 @@ const CREATE_NEW_POST = gql`
         errorCode
         code
       }
-      data {
+      post {
         id
         title
         content
@@ -63,7 +63,7 @@ export default function Write() {
   useEffect(() => {
     if (data) {
       if (data.postCreate.success) {
-        router.push('/posts');
+        router.back();
       }
     }
   }, [data]);
