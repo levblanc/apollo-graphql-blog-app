@@ -1,68 +1,19 @@
 import { gql, useMutation } from '@apollo/client';
-import { Paper, Text, Group, Button, Box, Divider, Title } from '@mantine/core';
+import {
+  Paper,
+  Text,
+  Group,
+  Button,
+  Box,
+  Divider,
+  Title,
+  Modal,
+} from '@mantine/core';
 import Error from '@/components/Error';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import dateFormatter from '@/utils/dateFormatter';
-
-const POST_PUBLISH = gql`
-  mutation PostPublish($postId: Int!) {
-    postPublish(postId: $postId) {
-      code
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-      post {
-        author {
-          id
-          name
-        }
-        title
-        content
-        published
-      }
-    }
-  }
-`;
-
-const POST_UNPUBLISH = gql`
-  mutation PostUnpublish($postId: Int!) {
-    postUnpublish(postId: $postId) {
-      code
-      post {
-        author {
-          id
-          name
-        }
-        id
-        title
-        content
-        published
-      }
-    }
-  }
-`;
-
-const POST_DELETE = gql`
-  mutation PostDelete($postId: Int!) {
-    postDelete(postId: $postId) {
-      code
-      post {
-        author {
-          id
-          name
-        }
-        id
-        title
-        content
-        published
-      }
-    }
-  }
-`;
+import { POST_PUBLISH, POST_UNPUBLISH, POST_DELETE } from './gql';
 
 export default function Post({
   id,
@@ -92,6 +43,9 @@ export default function Post({
   ] = useMutation(POST_DELETE);
 
   const [isPublished, setIsPublished] = useState(published);
+  const [deletePostConfirmationOpened, setDeletePostConfirmationOpened] =
+    useState(false);
+  const [_deletePostResultOpened, setDeletePostResultOpened] = useState(false);
 
   const handlePublish = async (postId: number) => {
     await postPublish({
@@ -120,10 +74,48 @@ export default function Post({
     await postDelete({
       variables: { postId },
     });
+
+    setDeletePostConfirmationOpened(false);
+  };
+
+  const handleDeleteConfirmationClose = () => {
+    setDeletePostResultOpened(false);
+    router.reload();
   };
 
   return (
     <Box mx="auto">
+      <Modal
+        opened={deletePostConfirmationOpened}
+        onClose={() => setDeletePostConfirmationOpened(false)}
+        title="Post Delete Confirmation"
+        centered
+      >
+        <Text>{`Are you sure to delete post '${title}'?`} </Text>
+        <Divider mt="md" mb="md" />
+        <Group position="right">
+          <Button onClick={() => setDeletePostConfirmationOpened(false)}>
+            Cancel
+          </Button>
+          <Button color="red" onClick={() => handleDelete(Number(id))}>
+            Delete
+          </Button>
+        </Group>
+      </Modal>
+
+      <Modal
+        opened={deleteData?.postDelete?.success}
+        onClose={() => setDeletePostResultOpened(false)}
+        centered
+        title="Post Deleted"
+      >
+        <Text>{`Post '${title}' delete successfully.`} </Text>
+        <Divider mt="md" mb="md" />
+        <Group position="right">
+          <Button onClick={() => handleDeleteConfirmationClose()}>OK</Button>
+        </Group>
+      </Modal>
+
       <Paper mb="md" p="md" withBorder radius="md" shadow="md">
         <Title
           order={2}
@@ -139,7 +131,7 @@ export default function Post({
             By {authorName}
           </Text>
           <Text color="dimmed" size="sm" italic>
-            Created At {dateFormatter(createdAt)}
+            Created At: {dateFormatter(createdAt)}
           </Text>
         </Group>
         <Text>{content}</Text>
@@ -169,7 +161,7 @@ export default function Post({
               )}
               <Button
                 color="red"
-                onClick={() => handleDelete(Number(id))}
+                onClick={() => setDeletePostConfirmationOpened(true)}
                 loading={deleteLoading}
               >
                 Delete
