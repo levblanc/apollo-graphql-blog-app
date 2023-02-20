@@ -2,6 +2,7 @@ import Post from '@/components/Post';
 import Error from '@/components/Error';
 import { gql, useQuery } from '@apollo/client';
 import { Container, Loader } from '@mantine/core';
+import { useEffect } from 'react';
 
 const GET_POSTS = gql`
   query GetPosts {
@@ -30,8 +31,12 @@ const GET_POSTS = gql`
 `;
 
 export default function Posts() {
-  const { data, error, loading } = useQuery(GET_POSTS);
+  const { data, error, loading, refetch } = useQuery(GET_POSTS);
   const posts = data?.getPosts?.posts;
+
+  useEffect(() => {
+    refetch();
+  });
 
   return (
     <Container>
