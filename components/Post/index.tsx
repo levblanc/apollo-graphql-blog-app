@@ -72,6 +72,7 @@ export default function Post({
   authorName,
   published,
   isMyProfile,
+  showActionButtons = false,
 }: PostAttr) {
   const router = useRouter();
 
@@ -142,36 +143,40 @@ export default function Post({
           </Text>
         </Group>
         <Text>{content}</Text>
-        <Divider mt="lg" mb="md" />
-        <Group position="right">
-          <Button color="teal" onClick={() => handleEdit(Number(id))}>
-            Edit
-          </Button>
-          {isMyProfile && isPublished && (
-            <Button
-              color="yellow"
-              onClick={() => handleUnpublish(Number(id))}
-              loading={unpublishLoading}
-            >
-              Unpublish
-            </Button>
-          )}
-          {isMyProfile && !isPublished && (
-            <Button
-              onClick={() => handlePublish(Number(id))}
-              loading={publishLoading}
-            >
-              Publish
-            </Button>
-          )}
-          <Button
-            color="red"
-            onClick={() => handleDelete(Number(id))}
-            loading={deleteLoading}
-          >
-            Delete
-          </Button>
-        </Group>
+        {showActionButtons && (
+          <>
+            <Divider mt="lg" mb="md" />
+            <Group position="right">
+              <Button color="teal" onClick={() => handleEdit(Number(id))}>
+                Edit
+              </Button>
+              {isMyProfile && isPublished && (
+                <Button
+                  color="yellow"
+                  onClick={() => handleUnpublish(Number(id))}
+                  loading={unpublishLoading}
+                >
+                  Unpublish
+                </Button>
+              )}
+              {isMyProfile && !isPublished && (
+                <Button
+                  onClick={() => handlePublish(Number(id))}
+                  loading={publishLoading}
+                >
+                  Publish
+                </Button>
+              )}
+              <Button
+                color="red"
+                onClick={() => handleDelete(Number(id))}
+                loading={deleteLoading}
+              >
+                Delete
+              </Button>
+            </Group>
+          </>
+        )}
       </Paper>
 
       {publishError && <Error message={publishError.message} />}

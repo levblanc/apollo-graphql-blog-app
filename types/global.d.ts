@@ -52,5 +52,6 @@ declare global {
     authorName: string;
     published?: boolean;
     isMyProfile?: boolean;
+    showActionButtons?: boolean;
   };
 }
