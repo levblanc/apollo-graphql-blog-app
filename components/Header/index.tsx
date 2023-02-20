@@ -61,7 +61,9 @@ export default function AppHeader() {
     <Box pb={80}>
       <Header height={80} p="md">
         <Group position="apart">
-          <Title order={1}>Blog App</Title>
+          <Title order={1} onClick={() => router.push('/')}>
+            Blog App
+          </Title>
 
           {isAuthenticated ? (
             <Box className={classes.hiddenMobile}>
