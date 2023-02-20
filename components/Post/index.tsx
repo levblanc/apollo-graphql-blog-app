@@ -15,7 +15,7 @@ const POST_PUBLISH = gql`
         code
       }
       success
-      data {
+      post {
         author {
           id
           name
@@ -32,7 +32,7 @@ const POST_UNPUBLISH = gql`
   mutation PostUnpublish($postId: Int!) {
     postUnpublish(postId: $postId) {
       code
-      data {
+      post {
         author {
           id
           name

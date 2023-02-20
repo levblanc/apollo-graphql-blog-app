@@ -36,7 +36,7 @@ export const postCreate = mutationField('postCreate', {
       });
 
       return successResponse({
-        data: post,
+        data: { post },
       });
     } catch (error: any) {
       return errorResponse({ error });
@@ -106,7 +106,7 @@ export const postUpdate = mutationField('postUpdate', {
       });
 
       return successResponse({
-        data: updatedPost,
+        data: { post: updatedPost },
       });
     } catch (error) {
       return errorResponse({ error });
@@ -162,7 +162,7 @@ export const postDelete = mutationField('postDelete', {
       });
 
       return successResponse({
-        data: existingPost,
+        data: { post: existingPost },
       });
     } catch (error) {
       return errorResponse({ error });
@@ -221,7 +221,7 @@ export const postPublish = mutationField('postPublish', {
       });
 
       return successResponse({
-        data: publishedPost,
+        data: { post: publishedPost },
       });
     } catch (error) {
       return errorResponse({
@@ -282,7 +282,7 @@ export const postUnpublish = mutationField('postUnpublish', {
       });
 
       return successResponse({
-        data: publishedPost,
+        data: { post: publishedPost },
       });
     } catch (error) {
       return errorResponse({
