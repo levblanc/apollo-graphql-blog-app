@@ -1,7 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
-import { Card, Text, Group, Button, Box } from '@mantine/core';
+import { Paper, Text, Group, Button, Box, Divider, Title } from '@mantine/core';
 import Error from '@/components/Error';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import dateFormatter from '@/utils/dateFormatter';
 
 const POST_PUBLISH = gql`
   mutation PostPublish($postId: Int!) {
@@ -13,7 +15,6 @@ const POST_PUBLISH = gql`
         errorCode
         code
       }
-      success
       post {
         author {
           id
@@ -45,6 +46,24 @@ const POST_UNPUBLISH = gql`
   }
 `;
 
+const POST_DELETE = gql`
+  mutation PostDelete($postId: Int!) {
+    postDelete(postId: $postId) {
+      code
+      post {
+        author {
+          id
+          name
+        }
+        id
+        title
+        content
+        published
+      }
+    }
+  }
+`;
+
 export default function Post({
   id,
   title,
@@ -54,18 +73,22 @@ export default function Post({
   published,
   isMyProfile,
 }: PostAttr) {
-  const dateFormatter = (date: string): string => {
-    return `${new Date(Number(date))}`.split(' ').splice(1, 4).join(' ');
-  };
+  const router = useRouter();
 
   const [
     postPublish,
     { data: publishData, loading: publishLoading, error: publishError },
   ] = useMutation(POST_PUBLISH);
+
   const [
     postUnpublish,
     { data: unpublishData, loading: unpublishLoading, error: unpublishError },
   ] = useMutation(POST_UNPUBLISH);
+
+  const [
+    postDelete,
+    { data: deleteData, loading: deleteLoading, error: deleteError },
+  ] = useMutation(POST_DELETE);
 
   const [isPublished, setIsPublished] = useState(published);
 
@@ -85,16 +108,48 @@ export default function Post({
     setIsPublished(false);
   };
 
+  const handleEdit = (postId: number) => {
+    const type = isMyProfile ? 'edit' : 'view';
+    const path = `/post/${type}/${postId}`;
+
+    router.push(path);
+  };
+
+  const handleDelete = async (postId: number) => {
+    await postDelete({
+      variables: { postId },
+    });
+  };
+
   return (
-    <Box>
-      <Card key={id} withBorder px="md" radius="md" mb="md">
-        <Group position="apart" mb="md">
-          <Text weight={800} fz={22} color="blue">
-            {title}
+    <Box mx="auto">
+      <Paper mb="md" p="md" withBorder radius="md" shadow="md">
+        <Title
+          order={2}
+          color="blue"
+          mb="sm"
+          sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' } }}
+          onClick={() => handleEdit(Number(id))}
+        >
+          {title}
+        </Title>
+        <Group position="apart" mb="xs">
+          <Text color="dimmed" size="sm" italic>
+            By {authorName}
           </Text>
+          <Text color="dimmed" size="sm" italic>
+            Created At {dateFormatter(createdAt)}
+          </Text>
+        </Group>
+        <Text>{content}</Text>
+        <Divider mt="lg" mb="md" />
+        <Group position="right">
+          <Button color="teal" onClick={() => handleEdit(Number(id))}>
+            Edit
+          </Button>
           {isMyProfile && isPublished && (
             <Button
-              color="red"
+              color="yellow"
               onClick={() => handleUnpublish(Number(id))}
               loading={unpublishLoading}
             >
@@ -109,17 +164,15 @@ export default function Post({
               Publish
             </Button>
           )}
+          <Button
+            color="red"
+            onClick={() => handleDelete(Number(id))}
+            loading={deleteLoading}
+          >
+            Delete
+          </Button>
         </Group>
-        <Group position="apart" mb="xs">
-          <Text color="dimmed" size="sm" italic>
-            By {authorName}
-          </Text>
-          <Text color="dimmed" size="sm" italic>
-            Created At {dateFormatter(createdAt)}
-          </Text>
-        </Group>
-        <Text>{content}</Text>
-      </Card>
+      </Paper>
 
       {publishError && <Error message={publishError.message} />}
 
