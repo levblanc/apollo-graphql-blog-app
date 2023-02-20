@@ -1,8 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { Card, Text, Group, Button, Box } from '@mantine/core';
 import Error from '@/components/Error';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const POST_PUBLISH = gql`
   mutation PostPublish($postId: Int!) {
@@ -55,7 +54,6 @@ export default function Post({
   published,
   isMyProfile,
 }: PostAttr) {
-  const router = useRouter();
   const dateFormatter = (date: string): string => {
     return `${new Date(Number(date))}`.split(' ').splice(1, 4).join(' ');
   };
@@ -69,27 +67,23 @@ export default function Post({
     { data: unpublishData, loading: unpublishLoading, error: unpublishError },
   ] = useMutation(POST_UNPUBLISH);
 
+  const [isPublished, setIsPublished] = useState(published);
+
   const handlePublish = async (postId: number) => {
     await postPublish({
       variables: { postId },
     });
+
+    setIsPublished(true);
   };
 
   const handleUnpublish = async (postId: number) => {
     await postUnpublish({
       variables: { postId },
     });
+
+    setIsPublished(false);
   };
-
-  useEffect(() => {
-    if (publishData && publishData.postPublish.success) {
-      router.reload();
-    }
-
-    if (unpublishData && unpublishData.postUnpublish.success) {
-      router.reload();
-    }
-  }, [publishData, unpublishData]);
 
   return (
     <Box>
@@ -98,7 +92,7 @@ export default function Post({
           <Text weight={800} fz={22} color="blue">
             {title}
           </Text>
-          {isMyProfile && published && (
+          {isMyProfile && isPublished && (
             <Button
               color="red"
               onClick={() => handleUnpublish(Number(id))}
@@ -107,7 +101,7 @@ export default function Post({
               Unpublish
             </Button>
           )}
-          {isMyProfile && !published && (
+          {isMyProfile && !isPublished && (
             <Button
               onClick={() => handlePublish(Number(id))}
               loading={publishLoading}
