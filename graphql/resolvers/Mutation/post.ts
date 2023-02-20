@@ -135,7 +135,7 @@ export const postDelete = mutationField('postDelete', {
 
       const authorizationRes = await userAuthorization({
         userId: auth.userId,
-        postId: postId,
+        postId,
         prisma,
       });
 
@@ -145,7 +145,7 @@ export const postDelete = mutationField('postDelete', {
 
       const existingPost = await prisma.post.findUnique({
         where: {
-          id: Number(postId),
+          id: postId,
         },
       });
 
@@ -157,7 +157,7 @@ export const postDelete = mutationField('postDelete', {
 
       await prisma.post.delete({
         where: {
-          id: Number(postId),
+          id: postId,
         },
       });
 
@@ -201,7 +201,7 @@ export const postPublish = mutationField('postPublish', {
     try {
       const existingPost = await prisma.post.findUnique({
         where: {
-          id: Number(postId),
+          id: postId,
         },
       });
 
@@ -262,7 +262,7 @@ export const postUnpublish = mutationField('postUnpublish', {
     try {
       const existingPost = await prisma.post.findUnique({
         where: {
-          id: Number(postId),
+          id: postId,
         },
       });
 
