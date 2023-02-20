@@ -55,7 +55,7 @@ export default function Profile() {
 
   useEffect(() => {
     refetch({ userId: Number(id) });
-  }, []);
+  });
 
   const profile = data?.getProfile?.profile;
 
