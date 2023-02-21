@@ -7,6 +7,7 @@ import {
   Title,
   Text,
   Loader,
+  Divider,
 } from '@mantine/core';
 import Error from '@/components/Error';
 import Post from '@/components/Post';
@@ -14,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { GET_PROFILE } from './gql';
+import { IconFileDescription } from '@tabler/icons-react';
 
 export default function Profile() {
   const router = useRouter();
@@ -55,23 +57,26 @@ export default function Profile() {
       ) : (
         profile && (
           <>
-            <Group
-              position="apart"
-              mb="md"
-              sx={{ borderBottom: '1px solid grey' }}
-            >
+            <Group position="apart">
               <Box mb="sm" p="md">
-                <Title order={2} mb="sm">
+                <Title order={2} mb="sm" color="gray.8">
                   {profile.user.name}
                 </Title>
                 <Text color="dimmed">{profile.bio}</Text>
               </Box>
               {profile.isMyProfile ? (
-                <Button onClick={() => router.push('/write')}>
+                <Button
+                  color="cyan.4"
+                  leftIcon={<IconFileDescription size={16} />}
+                  onClick={() => router.push('/write')}
+                >
                   Create New Post
                 </Button>
               ) : null}
             </Group>
+
+            <Divider mb="md" />
+
             {profile.user.posts && !!profile.user.posts.length ? (
               profile.user.posts.map((post: PostData) => (
                 <Post

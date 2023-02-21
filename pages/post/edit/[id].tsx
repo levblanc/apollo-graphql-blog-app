@@ -96,7 +96,9 @@ export default function ViewPost() {
                 disabled={updateLoading}
                 {...form.getInputProps('title')}
               />
+
               <Divider mt="md" mb="md" />
+
               <Group position="apart" mb="lg">
                 <Text color="dimmed" size="sm" italic>
                   By {post.author.name}
@@ -108,6 +110,7 @@ export default function ViewPost() {
               <Textarea
                 placeholder="Post Content"
                 required
+                minRows={15}
                 disabled={updateLoading}
                 {...form.getInputProps('content')}
               />
@@ -123,6 +126,7 @@ export default function ViewPost() {
 
                 <Button
                   size="md"
+                  color="cyan.4"
                   type="submit"
                   loading={updateLoading}
                   disabled={!form.isValid()}

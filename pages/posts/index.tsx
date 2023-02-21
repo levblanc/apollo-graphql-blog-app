@@ -33,6 +33,7 @@ export default function Posts() {
             A blog created with Next.js (Typescript), Apollo Server V4, Prisma,
             Nexus, PostgreSQL and Mantine UI
           </Text>
+
           <Divider mb="xl" />
 
           {posts &&

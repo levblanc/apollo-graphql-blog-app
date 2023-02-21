@@ -14,6 +14,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import dateFormatter from '@/utils/dateFormatter';
 import { POST_PUBLISH, POST_UNPUBLISH, POST_DELETE } from './gql';
+import {
+  IconEyeFilled,
+  IconEyeOff,
+  IconPencil,
+  IconTrash,
+} from '@tabler/icons-react';
 
 export default function Post({
   id,
@@ -91,10 +97,16 @@ export default function Post({
         title="Post Delete Confirmation"
         centered
       >
-        <Text>{`Are you sure to delete post '${title}'?`} </Text>
+        <Text mt="xl" mb="xl">
+          {`Are you sure to delete post '${title}'?`}{' '}
+        </Text>
         <Divider mt="md" mb="md" />
         <Group position="right">
-          <Button onClick={() => setDeletePostConfirmationOpened(false)}>
+          <Button
+            color="cyan.4"
+            variant="outline"
+            onClick={() => setDeletePostConfirmationOpened(false)}
+          >
             Cancel
           </Button>
           <Button color="red" onClick={() => handleDelete(Number(id))}>
@@ -109,10 +121,17 @@ export default function Post({
         centered
         title="Post Deleted"
       >
-        <Text>{`Post '${title}' delete successfully.`} </Text>
+        <Text mt="xl" mb="xl">
+          {`Post '${title}' delete successfully.`}{' '}
+        </Text>
         <Divider mt="md" mb="md" />
         <Group position="right">
-          <Button onClick={() => handleDeleteConfirmationClose()}>OK</Button>
+          <Button
+            color="cyan.4"
+            onClick={() => handleDeleteConfirmationClose()}
+          >
+            OK
+          </Button>
         </Group>
       </Modal>
 
@@ -137,14 +156,19 @@ export default function Post({
         <Text>{content}</Text>
         {showActionButtons && (
           <>
-            <Divider mt="lg" mb="md" />
+            <Divider mt="xl" mb="md" />
             <Group position="right">
-              <Button color="teal" onClick={() => handleEdit(Number(id))}>
+              <Button
+                color="teal"
+                leftIcon={<IconPencil size={16} />}
+                onClick={() => handleEdit(Number(id))}
+              >
                 Edit
               </Button>
               {isMyProfile && isPublished && (
                 <Button
                   color="yellow"
+                  leftIcon={<IconEyeOff size={16} />}
                   onClick={() => handleUnpublish(Number(id))}
                   loading={unpublishLoading}
                 >
@@ -153,6 +177,7 @@ export default function Post({
               )}
               {isMyProfile && !isPublished && (
                 <Button
+                  leftIcon={<IconEyeFilled size={16} />}
                   onClick={() => handlePublish(Number(id))}
                   loading={publishLoading}
                 >
@@ -161,6 +186,7 @@ export default function Post({
               )}
               <Button
                 color="red"
+                leftIcon={<IconTrash size={16} />}
                 onClick={() => setDeletePostConfirmationOpened(true)}
                 loading={deleteLoading}
               >

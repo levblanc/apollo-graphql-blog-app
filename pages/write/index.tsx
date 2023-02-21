@@ -61,6 +61,7 @@ export default function Write() {
         <Title
           order={2}
           align="center"
+          color="cyan.4"
           mb={20}
           sx={(theme) => ({
             fontFamily: `Greycliff CF, ${theme.fontFamily}`,
@@ -91,7 +92,8 @@ export default function Write() {
           <Button
             mt="md"
             size="md"
-            variant="default"
+            variant="outline"
+            color="gray.6"
             type="button"
             onClick={() => router.back()}
           >
@@ -100,11 +102,12 @@ export default function Write() {
           <Button
             mt="md"
             size="md"
+            color="cyan.4"
             type="submit"
             disabled={!form.isValid()}
             loading={loading}
           >
-            Add Post
+            Create Post
           </Button>
         </Group>
       </Container>
