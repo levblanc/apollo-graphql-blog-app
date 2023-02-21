@@ -30,6 +30,10 @@ export default function AppHeader() {
     if (router.query.redirect) {
       const basePath = router.asPath.split('?')[0];
       encodedPath = encodeURIComponent(basePath);
+
+      if (basePath === '/sign-up' || basePath === '/login') {
+        encodedPath = encodeURIComponent(router.query.redirect as string);
+      }
     }
 
     let path = '/posts';
