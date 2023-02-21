@@ -11,38 +11,12 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import emailValidator from '@/utils/emailValidator';
-import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-
-const SIGN_UP = gql`
-  mutation Signup(
-    $credentials: CredentialsInput!
-    $bio: String!
-    $name: String
-  ) {
-    signup(credentials: $credentials, bio: $bio, name: $name) {
-      code
-      message
-      success
-      token
-      user {
-        id
-        name
-        email
-      }
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-    }
-  }
-`;
+import { SIGN_UP } from './gql';
 
 export default function SignUp() {
   const router = useRouter();

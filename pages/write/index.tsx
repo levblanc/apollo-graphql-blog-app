@@ -1,5 +1,5 @@
 import Error from '@/components/Error';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {
   Container,
   Button,
@@ -11,29 +11,7 @@ import {
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-
-const CREATE_NEW_POST = gql`
-  mutation postCreate($post: PostInput) {
-    postCreate(post: $post) {
-      code
-      message
-      success
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-      post {
-        id
-        title
-        content
-        createdAt
-        published
-      }
-    }
-  }
-`;
+import { CREATE_NEW_POST } from './gql';
 
 export default function Write() {
   const router = useRouter();

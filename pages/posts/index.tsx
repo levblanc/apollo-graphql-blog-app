@@ -1,34 +1,9 @@
 import Post from '@/components/Post';
 import Error from '@/components/Error';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Container, Loader } from '@mantine/core';
 import { useEffect } from 'react';
-
-const GET_POSTS = gql`
-  query GetPosts {
-    getPosts {
-      code
-      success
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-      message
-      posts {
-        author {
-          name
-        }
-        id
-        title
-        content
-        createdAt
-        published
-      }
-    }
-  }
-`;
+import { GET_POSTS } from './gql';
 
 export default function Posts() {
   const { data, error, loading, refetch } = useQuery(GET_POSTS);

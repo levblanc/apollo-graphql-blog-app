@@ -9,34 +9,13 @@ import {
   PasswordInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { useEffect } from 'react';
 import emailValidator from '@/utils/emailValidator';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-
-const SIGN_IN = gql`
-  mutation Signin($credentials: CredentialsInput!) {
-    signin(credentials: $credentials) {
-      code
-      success
-      token
-      user {
-        id
-        name
-        email
-      }
-      error {
-        name
-        message
-        errorCode
-        code
-      }
-    }
-  }
-`;
+import { SIGN_IN } from './gql';
 
 export default function SignIn() {
   const router = useRouter();
