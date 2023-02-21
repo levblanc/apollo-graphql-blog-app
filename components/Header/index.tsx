@@ -10,16 +10,21 @@ import {
   Burger,
   Drawer,
   Text,
+  ActionIcon,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import useStyles from './styles';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
+import { IconSun, IconMoonStars } from '@tabler/icons-react';
 
 export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const { classes } = useStyles();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const darkScheme = colorScheme === 'dark';
   const { userId, username, email, clearAuthStatus, isAuthenticated } =
     useAuth();
   const router = useRouter();
@@ -68,70 +73,85 @@ export default function AppHeader() {
   };
 
   return (
-    <Box pb={80}>
-      <Header height={80} p="md">
+    <Box mb={50}>
+      <Header height={90} p="lg">
         <Group position="apart">
           <Title
             order={1}
+            color="cyan.5"
+            italic
             sx={{
               '&:hover': { cursor: 'pointer' },
             }}
             onClick={() => router.push('/')}
           >
-            Blogify
+            {'{ Blogify }'}
           </Title>
 
-          {isAuthenticated ? (
-            <Box className={classes.hiddenMobile}>
-              <Menu shadow="md" width={200}>
-                <Menu.Target>
-                  <UnstyledButton>
-                    <Group>
-                      <Avatar size={40} color="blue">
-                        {username.slice(0, 1).toUpperCase()}
-                      </Avatar>
-                      <div>
-                        <Text>{username}</Text>
-                        <Text size="xs" color="dimmed">
-                          {email}
-                        </Text>
-                      </div>
-                    </Group>
-                  </UnstyledButton>
-                </Menu.Target>
+          <Group position="right">
+            {isAuthenticated ? (
+              <Box className={classes.hiddenMobile}>
+                <Menu shadow="md" width={200}>
+                  <Menu.Target>
+                    <UnstyledButton>
+                      <Group>
+                        <Avatar size={40} color="cyan.4">
+                          {username.slice(0, 1).toUpperCase()}
+                        </Avatar>
+                        <div>
+                          <Text>{username}</Text>
+                          <Text size="xs" color="dimmed">
+                            {email}
+                          </Text>
+                        </div>
+                      </Group>
+                    </UnstyledButton>
+                  </Menu.Target>
 
-                <Menu.Dropdown>
-                  <Menu.Item onClick={() => goToProfile(userId)}>
-                    Profile
-                  </Menu.Item>
+                  <Menu.Dropdown>
+                    <Menu.Item onClick={() => goToProfile(userId)}>
+                      Profile
+                    </Menu.Item>
 
-                  <Menu.Divider />
+                    <Menu.Divider />
 
-                  <Menu.Item color="red" onClick={logout}>
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Box>
-          ) : (
-            <Group className={classes.hiddenMobile}>
-              <Button
-                component="a"
-                variant="default"
-                onClick={() => pathRedirect('login')}
-              >
-                Log in
-              </Button>
-              <Button component="a" onClick={() => pathRedirect('signup')}>
-                Sign up
-              </Button>
-            </Group>
-          )}
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            className={classes.hiddenDesktop}
-          />
+                    <Menu.Item color="red" onClick={logout}>
+                      Logout
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Box>
+            ) : (
+              <Group className={classes.hiddenMobile}>
+                <Button
+                  component="a"
+                  variant="default"
+                  onClick={() => pathRedirect('login')}
+                >
+                  Log in
+                </Button>
+                <Button
+                  component="a"
+                  color="cyan.4"
+                  onClick={() => pathRedirect('signup')}
+                >
+                  Sign up
+                </Button>
+              </Group>
+            )}
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              className={classes.hiddenDesktop}
+            />
+            <ActionIcon
+              color={darkScheme ? 'dark' : 'cyan.4'}
+              onClick={() => toggleColorScheme()}
+              title="Toggle color scheme"
+            >
+              {darkScheme ? <IconSun size={22} /> : <IconMoonStars size={22} />}
+            </ActionIcon>
+          </Group>
         </Group>
       </Header>
 
@@ -147,7 +167,7 @@ export default function AppHeader() {
         {isAuthenticated ? (
           <Menu>
             <Group>
-              <Avatar size={40} color="blue">
+              <Avatar size={40} color="cyan.4">
                 {username.slice(0, 1).toUpperCase()}
               </Avatar>
               <div>

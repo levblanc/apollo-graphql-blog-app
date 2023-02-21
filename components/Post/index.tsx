@@ -116,10 +116,10 @@ export default function Post({
         </Group>
       </Modal>
 
-      <Paper mb="md" p="md" withBorder radius="md" shadow="md">
+      <Paper mb="lg" p="xl" shadow="sm">
         <Title
           order={2}
-          color="blue"
+          color="cyan.4"
           mb="sm"
           sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' } }}
           onClick={() => handleEdit(Number(id))}

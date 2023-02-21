@@ -18,7 +18,7 @@
     "@mantine/hooks": "^5.10.3",
     "@next/font": "13.1.4",
     "@prisma/client": "^4.9.0",
-    "@tabler/icons": "^2.2.0",
+    "@tabler/icons-react": "^2.4.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.11.18",

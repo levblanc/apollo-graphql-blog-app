@@ -85,17 +85,18 @@ export default function SignUp() {
         <Title
           order={2}
           align="center"
+          color="cyan.4"
           sx={(theme) => ({
             fontFamily: `Greycliff CF, ${theme.fontFamily}`,
             fontWeight: 900,
           })}
         >
-          Welcome to Blogify!
+          Welcome to {'{ Blogify }'} !
         </Title>
 
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Already have an account?{' '}
-          <Anchor<'a'> href="/login" size="sm">
+          <Anchor<'a'> href="/login" size="sm" color="cyan.4">
             Log In
           </Anchor>
         </Text>
@@ -139,6 +140,7 @@ export default function SignUp() {
             fullWidth
             mt="xl"
             size="md"
+            color="cyan.4"
             type="submit"
             loading={loading}
             disabled={!form.isValid()}

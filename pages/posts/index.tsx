@@ -1,7 +1,7 @@
 import Post from '@/components/Post';
 import Error from '@/components/Error';
 import { useQuery } from '@apollo/client';
-import { Container, Loader } from '@mantine/core';
+import { Container, Divider, Loader, Text, Title } from '@mantine/core';
 import { useEffect } from 'react';
 import { GET_POSTS } from './gql';
 
@@ -25,19 +25,30 @@ export default function Posts() {
           message={data.getPosts.error.message}
         />
       ) : (
-        posts &&
-        posts.length &&
-        posts.map((post: PostData) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            content={post.content}
-            createdAt={post.createdAt}
-            authorName={post.author.name!}
-            published={post.published}
-          />
-        ))
+        <>
+          <Title order={1} color="gray.7" size={60} mb="md">
+            Latest
+          </Title>
+          <Text color="dimmed" mb="xl">
+            A blog created with Next.js (Typescript), Apollo Server V4, Prisma,
+            Nexus, PostgreSQL and Mantine UI
+          </Text>
+          <Divider mb="xl" />
+
+          {posts &&
+            posts.length &&
+            posts.map((post: PostData) => (
+              <Post
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                content={post.content}
+                createdAt={post.createdAt}
+                authorName={post.author.name!}
+                published={post.published}
+              />
+            ))}
+        </>
       )}
     </Container>
   );

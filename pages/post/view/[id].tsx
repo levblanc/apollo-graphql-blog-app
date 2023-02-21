@@ -30,7 +30,7 @@ export default function ViewPost() {
       ) : (
         post && (
           <>
-            <Title color="blue" align="center">
+            <Title color="cyan.4" align="center">
               {post.title}
             </Title>
             <Divider mt="md" mb="md" />
