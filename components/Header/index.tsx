@@ -25,7 +25,13 @@ export default function AppHeader() {
   const router = useRouter();
 
   const pathRedirect = (action: string): void => {
-    const encodedPath = encodeURIComponent(router.asPath);
+    let encodedPath = encodeURIComponent(router.asPath);
+
+    if (router.query.redirect) {
+      const basePath = router.asPath.split('?')[0];
+      encodedPath = encodeURIComponent(basePath);
+    }
+
     let path = '/posts';
     let query = `?redirect=${encodedPath}`;
 
