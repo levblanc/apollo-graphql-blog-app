@@ -103,7 +103,7 @@ export default function SignIn() {
             fontWeight: 900,
           })}
         >
-          Welcome back to Blog App!
+          Welcome back to Blogify!
         </Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Do not have an account yet?{' '}

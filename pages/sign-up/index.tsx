@@ -116,7 +116,7 @@ export default function SignUp() {
             fontWeight: 900,
           })}
         >
-          Welcome to Blog App!
+          Welcome to Blogify!
         </Title>
 
         <Text color="dimmed" size="sm" align="center" mt={5}>

@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Blog App</title>
+        <title>Blogify</title>
         <meta
           name="description"
           content="Blog app built with React, Apollo Server,  GraphQL, and PostgreSQL "
