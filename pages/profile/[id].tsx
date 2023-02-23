@@ -87,7 +87,7 @@ export default function Profile() {
                   authorName={profile.user.name}
                   published={post.published}
                   isMyProfile={profile.isMyProfile}
-                  showActionButtons
+                  showActionButtons={profile.isMyProfile}
                 />
               ))
             ) : (
