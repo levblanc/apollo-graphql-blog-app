@@ -29,7 +29,7 @@ export const post = queryField('getPost', {
   },
 });
 
-export const posts = queryField('getPosts', {
+export const posts = queryField('getPostList', {
   type: PostListResponse,
   async resolve(_parent, __args, { prisma }): Promise<ResolverResponse> {
     try {

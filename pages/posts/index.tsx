@@ -3,11 +3,11 @@ import Error from '@/components/Error';
 import { useQuery } from '@apollo/client';
 import { Container, Divider, Loader, Text, Title } from '@mantine/core';
 import { useEffect } from 'react';
-import { GET_POSTS } from './gql';
+import { GET_POST_LIST } from '@/gqlQuery/getPostList';
 
 export default function Posts() {
-  const { data, error, loading, refetch } = useQuery(GET_POSTS);
-  const posts = data?.getPosts?.posts;
+  const { data, error, loading, refetch } = useQuery(GET_POST_LIST);
+  const posts = data?.getPostList?.posts;
 
   useEffect(() => {
     refetch();
@@ -19,10 +19,10 @@ export default function Posts() {
         <Loader />
       ) : error ? (
         <Error message={error.message} />
-      ) : data?.getPosts?.error ? (
+      ) : data?.getPostList?.error ? (
         <Error
-          code={data.getPosts.error.errorCode || data.getPosts.error.code}
-          message={data.getPosts.error.message}
+          code={data.getPostList.error.errorCode || data.getPostList.error.code}
+          message={data.getPostList.error.message}
         />
       ) : (
         <>

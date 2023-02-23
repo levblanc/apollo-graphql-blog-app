@@ -15,7 +15,7 @@ import emailValidator from '@/utils/emailValidator';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-import { SIGN_IN } from './gql';
+import { SIGN_IN } from '@/gqlQuery/login';
 
 export default function SignIn() {
   const router = useRouter();
@@ -43,12 +43,12 @@ export default function SignIn() {
 
   useEffect(() => {
     if (data) {
-      if (data.signin.token) {
+      if (data.login.token) {
         updateAuthStatus({
-          userId: data.signin.user.id,
-          username: data.signin.user.name,
-          email: data.signin.user.email,
-          token: data.signin.token,
+          userId: data.login.user.id,
+          username: data.login.user.name,
+          email: data.login.user.email,
+          token: data.login.token,
         });
 
         let path = '/posts';
@@ -67,10 +67,10 @@ export default function SignIn() {
       <Container size={500} my={40}>
         {error && <Error message={error.message} />}
 
-        {data?.signin?.error && (
+        {data?.login?.error && (
           <Error
-            code={data.signin.error.errorCode || data.signin.error.code}
-            message={data.signin.error.message}
+            code={data.login.error.errorCode || data.login.error.code}
+            message={data.login.error.message}
           />
         )}
 

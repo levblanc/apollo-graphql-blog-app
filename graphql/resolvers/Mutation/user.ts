@@ -87,7 +87,7 @@ export const signup = mutationField('signup', {
   },
 });
 
-export const signin = mutationField('signin', {
+export const login = mutationField('login', {
   type: UserResponse,
   args: {
     credentials: nonNull(CredentialsInput),

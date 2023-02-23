@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-import { SIGN_UP } from './gql';
+import { SIGN_UP } from '@/gqlQuery/signup';
 
 export default function SignUp() {
   const router = useRouter();

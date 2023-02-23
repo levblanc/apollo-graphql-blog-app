@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const GET_POSTS = gql`
-  query GetPosts {
-    getPosts {
+export const GET_POST_LIST = gql`
+  query GetPostList {
+    getPostList {
       code
       success
       error {

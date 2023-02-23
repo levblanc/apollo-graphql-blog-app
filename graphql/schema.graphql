@@ -8,12 +8,12 @@ input CredentialsInput {
 }
 
 type Mutation {
+  login(credentials: CredentialsInput!): UserResponse
   postCreate(authorId: Int, post: PostInput): PostResponse
   postDelete(postId: Int!): PostResponse
   postPublish(postId: Int!): PostResponse
   postUnpublish(postId: Int!): PostResponse
   postUpdate(post: PostInput, postId: Int!): PostResponse
-  signin(credentials: CredentialsInput!): UserResponse
   signup(bio: String!, credentials: CredentialsInput!, name: String): UserResponse
 }
 
@@ -68,7 +68,7 @@ type ProfileResponse implements Response {
 
 type Query {
   getPost(postId: Int!): PostResponse
-  getPosts: PostListResponse
+  getPostList: PostListResponse
   getProfile(userId: Int!): ProfileResponse
   me: UserResponse
 }

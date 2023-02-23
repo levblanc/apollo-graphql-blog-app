@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const SIGN_IN = gql`
-  mutation Signin($credentials: CredentialsInput!) {
-    signin(credentials: $credentials) {
+  mutation Login($credentials: CredentialsInput!) {
+    login(credentials: $credentials) {
       code
       success
       token

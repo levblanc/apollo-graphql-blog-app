@@ -11,7 +11,7 @@ import {
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { CREATE_NEW_POST } from './gql';
+import { CREATE_NEW_POST } from '@/gqlQuery/postCreate';
 
 export default function Write() {
   const router = useRouter();

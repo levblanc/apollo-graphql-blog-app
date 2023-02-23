@@ -3,7 +3,7 @@ import dateFormatter from '@/utils/dateFormatter';
 import { useQuery } from '@apollo/client';
 import { Container, Divider, Group, Title, Text, Loader } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { GET_POST } from '../gql';
+import { GET_POST } from '@/gqlQuery/getPost';
 
 export default function ViewPost() {
   const router = useRouter();

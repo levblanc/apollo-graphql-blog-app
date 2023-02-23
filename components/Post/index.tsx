@@ -13,7 +13,11 @@ import Error from '@/components/Error';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import dateFormatter from '@/utils/dateFormatter';
-import { POST_PUBLISH, POST_UNPUBLISH, POST_DELETE } from './gql';
+import {
+  POST_PUBLISH,
+  POST_UNPUBLISH,
+  POST_DELETE,
+} from '@/gqlQuery/postMutations';
 import {
   IconEyeFilled,
   IconEyeOff,
