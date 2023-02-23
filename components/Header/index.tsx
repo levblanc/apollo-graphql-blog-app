@@ -69,7 +69,9 @@ export default function AppHeader() {
 
   const logout = () => {
     clearAuthStatus();
-    router.push('/login');
+
+    const loginPath = `/login?redirect=${encodeURIComponent(router.asPath)}`;
+    router.push(loginPath);
   };
 
   return (
