@@ -15,7 +15,8 @@ import {
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { GET_POST, POST_UPDATE } from '@/gqlQuery/getPost';
+import { GET_POST } from '@/gqlQuery/getPost';
+import { POST_UPDATE } from '@/gqlQuery/postMutations';
 
 export default function ViewPost() {
   const router = useRouter();
@@ -48,26 +49,30 @@ export default function ViewPost() {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    await postUpdate({
+    const updateResult = await postUpdate({
       variables: {
         postId: Number(id),
         post: values,
       },
     });
 
-    router.back();
+    if (updateResult.data) {
+      const { postUpdate } = updateResult.data;
+
+      if (postUpdate?.success) {
+        router.push(`/post/view/${id}`);
+      } else if (postUpdate.error?.code === 'A102') {
+        clearAuthStatus();
+        router.push('/login');
+      }
+    }
   };
 
   useEffect(() => {
     if (data) {
       if (!isAuthenticated) {
         clearAuthStatus();
-
-        const loginPath = `/login?redirect=${encodeURIComponent(
-          router.asPath
-        )}`;
-
-        router.push(loginPath);
+        router.push('/login');
       } else {
         form.setValues({
           title: post.title,
