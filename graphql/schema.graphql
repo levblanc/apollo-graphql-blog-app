@@ -44,6 +44,7 @@ type PostListResponse implements Response {
 type PostResponse implements Response {
   code: Int!
   error: ResponseError
+  isAuthenticated: Boolean
   message: String
   post: Post
   success: Boolean!

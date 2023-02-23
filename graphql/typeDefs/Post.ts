@@ -33,6 +33,7 @@ export const PostResponse = objectType({
   name: 'PostResponse',
   definition(t) {
     t.implements('Response');
+    t.boolean('isAuthenticated');
     t.field('post', { type: Post });
   },
 });

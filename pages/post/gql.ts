@@ -5,6 +5,7 @@ export const GET_POST = gql`
     getPost(postId: $postId) {
       code
       success
+      isAuthenticated
       post {
         author {
           name

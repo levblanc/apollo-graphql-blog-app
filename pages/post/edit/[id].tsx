@@ -1,4 +1,5 @@
 import Error from '@/components/Error';
+import { useAuth } from '@/hooks/useAuth';
 import dateFormatter from '@/utils/dateFormatter';
 import { useMutation, useQuery } from '@apollo/client';
 import {
@@ -19,6 +20,7 @@ import { GET_POST, POST_UPDATE } from '../gql';
 export default function ViewPost() {
   const router = useRouter();
   const { id } = router.query;
+  const { clearAuthStatus } = useAuth();
   const { data, loading, error } = useQuery(GET_POST, {
     variables: {
       postId: Number(id),
@@ -30,6 +32,7 @@ export default function ViewPost() {
   ] = useMutation(POST_UPDATE);
 
   const post = data?.getPost?.post;
+  const isAuthenticated = data?.getPost?.isAuthenticated;
 
   const form = useForm({
     initialValues: {
@@ -55,10 +58,20 @@ export default function ViewPost() {
 
   useEffect(() => {
     if (data) {
-      form.setValues({
-        title: post.title,
-        content: post.content,
-      });
+      if (!isAuthenticated) {
+        clearAuthStatus();
+
+        const loginPath = `/login?redirect=${encodeURIComponent(
+          router.asPath
+        )}`;
+
+        router.push(loginPath);
+      } else {
+        form.setValues({
+          title: post.title,
+          content: post.content,
+        });
+      }
     }
   }, [data]);
 

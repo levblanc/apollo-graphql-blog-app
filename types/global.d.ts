@@ -42,6 +42,7 @@ declare global {
     createdAt: string;
     author: User;
     published?: boolean;
+    isAuthenticated?: boolean;
   };
 
   type PostAttr = {

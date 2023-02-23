@@ -7,14 +7,21 @@ export const post = queryField('getPost', {
   args: {
     postId: nonNull(intArg()),
   },
-  async resolve(_parent, { postId }, { prisma }): Promise<ResolverResponse> {
+  async resolve(
+    _parent,
+    { postId },
+    { prisma, auth }
+  ): Promise<ResolverResponse> {
     try {
       const post = await prisma.post.findUnique({
         where: { id: postId },
       });
 
       return successResponse({
-        data: { post },
+        data: {
+          post,
+          isAuthenticated: auth.success,
+        },
       });
     } catch (error) {
       return errorResponse({ error });
