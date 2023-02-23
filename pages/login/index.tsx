@@ -92,7 +92,7 @@ export default function SignIn() {
           </Anchor>
         </Text>
 
-        <Paper withBorder shadow="md" p={20} mt={30} radius="md">
+        <Paper shadow="md" p={20} mt={30} radius="sm">
           <TextInput
             label="Email address"
             placeholder="you@gmail.com"
