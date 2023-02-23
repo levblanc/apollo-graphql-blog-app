@@ -1,4 +1,4 @@
-export const TOKEN = 'blog-app-auth-token';
+export const TOKEN = 'blogify-auth-token';
 
 // Authentication Errors
 export const SESSION_EXPIRED = {
