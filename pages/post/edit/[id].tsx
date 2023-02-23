@@ -25,7 +25,9 @@ export default function ViewPost() {
     variables: {
       postId: Number(id),
     },
+    fetchPolicy: 'network-only',
   });
+
   const [
     postUpdate,
     { data: updateData, loading: updateLoading, error: updateError },

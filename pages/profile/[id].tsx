@@ -22,10 +22,11 @@ export default function Profile() {
   const { id } = router.query;
 
   const { updateAuthStatus, clearAuthStatus } = useAuth();
-  const { data, error, loading, refetch } = useQuery(GET_PROFILE, {
+  const { data, error, loading } = useQuery(GET_PROFILE, {
     variables: {
       userId: Number(id),
     },
+    fetchPolicy: 'network-only',
   });
 
   const profile = data?.getProfile?.profile;
@@ -39,9 +40,7 @@ export default function Profile() {
         clearAuthStatus();
       }
     }
-
-    refetch({ userId: Number(id) });
-  }, [profile, id]);
+  }, [profile]);
 
   return (
     <Container>
