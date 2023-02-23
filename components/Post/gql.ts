@@ -27,6 +27,13 @@ export const POST_UNPUBLISH = gql`
   mutation PostUnpublish($postId: Int!) {
     postUnpublish(postId: $postId) {
       code
+      success
+      error {
+        name
+        message
+        errorCode
+        code
+      }
       post {
         author {
           id
@@ -46,6 +53,12 @@ export const POST_DELETE = gql`
     postDelete(postId: $postId) {
       code
       success
+      error {
+        name
+        message
+        errorCode
+        code
+      }
       post {
         author {
           id

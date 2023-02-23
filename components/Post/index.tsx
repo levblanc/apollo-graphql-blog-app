@@ -214,10 +214,22 @@ export default function Post({
       {unpublishData?.postUnpublish.error && (
         <Error
           code={
-            unpublishData.postPublish.error.errorCode ||
-            unpublishData.postPublish.error.code
+            unpublishData.postUnpublish.error.errorCode ||
+            unpublishData.postUnpublish.error.code
           }
           message={unpublishData.postUnpublish.error.message}
+        />
+      )}
+
+      {deleteError && <Error message={deleteError.message} />}
+
+      {deleteData?.postDelete.error && (
+        <Error
+          code={
+            deleteData.postDelete.error.errorCode ||
+            deleteData.postDelete.error.code
+          }
+          message={deleteData.postDelete.error.message}
         />
       )}
     </Box>
