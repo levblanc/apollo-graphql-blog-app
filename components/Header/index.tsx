@@ -202,7 +202,11 @@ export default function AppHeader() {
             >
               Log in
             </Button>
-            <Button component="a" onClick={() => pathRedirect('signup')}>
+            <Button
+              component="a"
+              color="cyan.4"
+              onClick={() => pathRedirect('signup')}
+            >
               Sign up
             </Button>
           </Group>
