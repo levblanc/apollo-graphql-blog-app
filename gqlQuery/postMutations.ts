@@ -1,5 +1,20 @@
 import { gql } from '@apollo/client';
 
+export const POST_UPDATE = gql`
+  mutation PostUpdate($postId: Int!, $post: PostInput) {
+    postUpdate(postId: $postId, post: $post) {
+      code
+      success
+      error {
+        code
+        errorCode
+        message
+        name
+      }
+    }
+  }
+`;
+
 export const POST_PUBLISH = gql`
   mutation PostPublish($postId: Int!) {
     postPublish(postId: $postId) {

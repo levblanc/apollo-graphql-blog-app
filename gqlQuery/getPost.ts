@@ -17,18 +17,3 @@ export const GET_POST = gql`
     }
   }
 `;
-
-export const POST_UPDATE = gql`
-  mutation PostUpdate($postId: Int!, $post: PostInput) {
-    postUpdate(postId: $postId, post: $post) {
-      code
-      success
-      error {
-        code
-        errorCode
-        message
-        name
-      }
-    }
-  }
-`;
