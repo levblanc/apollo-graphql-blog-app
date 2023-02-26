@@ -36,8 +36,7 @@ export default function Posts() {
 
           <Divider mb="xl" />
 
-          {posts &&
-            posts.length &&
+          {posts && !!posts.length ? (
             posts.map((post: PostData) => (
               <Post
                 key={post.id}
@@ -48,7 +47,12 @@ export default function Posts() {
                 authorName={post.author.name!}
                 published={post.published}
               />
-            ))}
+            ))
+          ) : (
+            <Text align="center" color="dimmed">
+              No posts created yet.
+            </Text>
+          )}
         </>
       )}
     </Container>
