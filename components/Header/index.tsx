@@ -18,6 +18,7 @@ import useStyles from './styles';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
+import Image from 'next/image';
 
 export default function AppHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -78,17 +79,25 @@ export default function AppHeader() {
     <Box mb={50}>
       <Header height={90} p="lg">
         <Group position="apart">
-          <Title
-            order={1}
-            color="cyan.5"
-            italic
+          <Box
             sx={{
+              display: 'flex',
+              alignItems: 'center',
               '&:hover': { cursor: 'pointer' },
             }}
             onClick={() => router.push('/')}
           >
-            {'{ Blogify }'}
-          </Title>
+            <Image width={36} height={36} src="/logo.png" alt="blogify logo" />
+            <Title
+              order={1}
+              variant="gradient"
+              gradient={{ from: 'teal.4', to: 'blue.5', deg: 160 }}
+              italic
+              ml="sm"
+            >
+              {'{ Blogify }'}
+            </Title>
+          </Box>
 
           <Group position="right">
             {isAuthenticated ? (
