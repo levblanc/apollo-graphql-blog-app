@@ -30,8 +30,8 @@ export default function Posts() {
             Latest
           </Title>
           <Text color="dimmed" mb="xl">
-            A blog created with Next.js (Typescript), Apollo Server V4, Prisma,
-            Nexus, PostgreSQL and Mantine UI
+            A blog created with Next.js (Typescript), Apollo GraphQL Server,
+            Prisma, Nexus, PostgreSQL and Mantine UI
           </Text>
 
           <Divider mb="xl" />
