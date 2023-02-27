@@ -12,6 +12,7 @@ export default function ViewPost() {
     variables: {
       postId: Number(id),
     },
+    fetchPolicy: 'network-only',
   });
 
   const post = data?.getPost?.post;
