@@ -14,7 +14,7 @@ type Mutation {
   postPublish(postId: Int!): PostResponse
   postUnpublish(postId: Int!): PostResponse
   postUpdate(post: PostInput, postId: Int!): PostResponse
-  signup(bio: String!, credentials: CredentialsInput!, name: String): UserResponse
+  signUp(bio: String!, credentials: CredentialsInput!, name: String): UserResponse
 }
 
 type Post {

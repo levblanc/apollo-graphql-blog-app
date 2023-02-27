@@ -25,7 +25,7 @@ const createToken = async ({
   });
 };
 
-export const signup = mutationField('signup', {
+export const signUp = mutationField('signUp', {
   type: UserResponse,
   args: {
     credentials: nonNull(CredentialsInput),
