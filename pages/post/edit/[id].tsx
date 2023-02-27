@@ -15,8 +15,8 @@ import {
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { GET_POST } from '@/gqlQuery/getPost';
-import { POST_UPDATE } from '@/gqlQuery/postMutations';
+import { GET_POST } from '@/pages/api/getPost';
+import { POST_UPDATE } from '@/pages/api/postMutations';
 
 export default function ViewPost() {
   const router = useRouter();

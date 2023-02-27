@@ -17,7 +17,7 @@ import {
   POST_PUBLISH,
   POST_UNPUBLISH,
   POST_DELETE,
-} from '@/gqlQuery/postMutations';
+} from '@/pages/api/postMutations';
 import {
   IconEyeFilled,
   IconEyeOff,

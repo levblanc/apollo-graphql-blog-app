@@ -3,7 +3,7 @@ import Error from '@/components/Error';
 import { useQuery } from '@apollo/client';
 import { Container, Divider, Loader, Text, Title } from '@mantine/core';
 import { useEffect } from 'react';
-import { GET_POST_LIST } from '@/gqlQuery/getPostList';
+import { GET_POST_LIST } from '@/pages/api/getPostList';
 
 export default function Posts() {
   const { data, error, loading, refetch } = useQuery(GET_POST_LIST);

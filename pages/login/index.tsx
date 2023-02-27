@@ -15,7 +15,7 @@ import emailValidator from '@/utils/emailValidator';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-import { SIGN_IN } from '@/gqlQuery/login';
+import { SIGN_IN } from '@/pages/api/login';
 
 export default function SignIn() {
   const router = useRouter();

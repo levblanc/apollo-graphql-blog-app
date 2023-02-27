@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 
 export const SIGN_UP = gql`
-  mutation Signup(
+  mutation SignUp(
     $credentials: CredentialsInput!
     $bio: String!
     $name: String
   ) {
-    signup(credentials: $credentials, bio: $bio, name: $name) {
+    signUp(credentials: $credentials, bio: $bio, name: $name) {
       code
       message
       success

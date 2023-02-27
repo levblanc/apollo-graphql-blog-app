@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 import Error from '@/components/Error';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/useAuth';
-import { SIGN_UP } from '@/gqlQuery/signup';
+import { SIGN_UP } from '@/pages/api/signUp';
 
 export default function SignUp() {
   const router = useRouter();
@@ -37,12 +37,12 @@ export default function SignUp() {
 
   useEffect(() => {
     if (data) {
-      if (data.signup.token) {
+      if (data.signUp.token) {
         updateAuthStatus({
-          userId: data.signup.user.id,
-          username: data.signup.user.name,
-          email: data.signup.user.email,
-          token: data.signup.token,
+          userId: data.signUp.user.id,
+          username: data.signUp.user.name,
+          email: data.signUp.user.email,
+          token: data.signUp.token,
         });
 
         let path = '/posts';
@@ -75,10 +75,10 @@ export default function SignUp() {
       <Container size={500} my={40}>
         {error && <Error message={error.message} />}
 
-        {data?.signup?.error && (
+        {data?.signUp?.error && (
           <Error
-            code={data.signup.error.errorCode || data.signup.error.code}
-            message={data.signup.error.message}
+            code={data.signUp.error.errorCode || data.signUp.error.code}
+            message={data.signUp.error.message}
           />
         )}
 

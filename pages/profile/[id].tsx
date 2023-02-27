@@ -14,7 +14,7 @@ import Post from '@/components/Post';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { GET_PROFILE } from '@/gqlQuery/getProfile';
+import { GET_PROFILE } from '@/pages/api/getProfile';
 import { IconFileDescription } from '@tabler/icons-react';
 
 export default function Profile() {
